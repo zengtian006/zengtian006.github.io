@@ -18,7 +18,7 @@
     <meta property="og:url" content="/">
     <meta property="og:title" content="Building RESTFul APIs with Django REST framework">
     <meta property="og:type" content="article">
-    <meta property="og:description" content="```    4.0.0    com.example    myproject    0.0.1-SNAPSHOT                org.springframework.boot        spring-boot-starter-parent        1.4.2.RELEASE    ...">
+    <meta property="og:description" content="Preparation  Install Python  Install  Django">
 
     <!--   Core CSS Files   -->
     <link href="//cdn.bootcss.com/flex-layout-attribute/1.0.3/css/flex-layout-attribute.min.css" rel="stylesheet">
@@ -63,39 +63,7 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <p>```
-<?xml version="1.0" encoding="UTF-8"?></p>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelversion>4.0.0</modelversion>
-    <groupid>com.example</groupid>
-    <artifactid>myproject</artifactid>
-    <version>0.0.1-SNAPSHOT</version>
-    <!-- Inherit defaults from Spring Boot -->
-    <parent>
-        <groupid>org.springframework.boot</groupid>
-        <artifactid>spring-boot-starter-parent</artifactid>
-        <version>1.4.2.RELEASE</version>
-    </parent>
-    <!-- Add typical dependencies for a web application -->
-    <dependencies>
-        <dependency>
-            <groupid>org.springframework.boot</groupid>
-            <artifactid>spring-boot-starter-web</artifactid>
-        </dependency>
-    </dependencies>
-    <!-- Package as an executable jar -->
-    <build>
-        <plugins>
-            <plugin>
-                <groupid>org.springframework.boot</groupid>
-                <artifactid>spring-boot-maven-plugin</artifactid>
-            </plugin>
-        </plugins>
-    </build>
-</project>
-<p>```</p>
-
-<h2 id="preparation">Preparation</h2>
+        <h2 id="preparation">Preparation</h2>
 <ol>
   <li>Install <a href="https://www.python.org/downloads/">Python</a></li>
   <li>
@@ -121,9 +89,9 @@
     <p>Create a Django project and an app. I created it with a name django-tutorial and music</p>
 
     <p><code class="highlighter-rouge">
- $ django-admin startproject django-tutorial	
- $ cd django-tutorial
- $ python manage.py startapp music
+$ django-admin startproject django-tutorial	
+$ cd django-tutorial
+$ python manage.py startapp music
 </code></p>
   </li>
   <li>
@@ -143,17 +111,18 @@
 
     <p>in music/models.py</p>
 
-    <p><code class="highlighter-rouge">
- from django.db import models
- # Create your models here.
+    <p>```
+ from django.db import models</p>
+
+    <p># Create your models here.
  class Music(models.Model):
      song = models.TextField()
      singer = models.TextField()
      last_modify_date = models.DateTimeField(auto_now=True)
      created = models.DateTimeField(auto_now_add=True)
      class Meta:
-         db_table = "music"
-</code></p>
+         db_table = “music”
+ ```</p>
   </li>
   <li>
     <p>Create database in SQLite (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
@@ -161,9 +130,9 @@
 </ol>
 
 <p><code class="highlighter-rouge">
-    python manage.py makemigrations
-    python manage.py migrate
-   </code></p>
+python manage.py makemigrations
+python manage.py migrate
+</code></p>
 
 <ol>
   <li>Create a music/serializers.py which should look like the below way.</li>

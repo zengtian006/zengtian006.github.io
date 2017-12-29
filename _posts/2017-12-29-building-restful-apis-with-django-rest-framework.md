@@ -7,40 +7,6 @@ card-image: http://www.django-rest-framework.org/img/logo.png
 post-card-type: image
 ---
 
-
-```
-<?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
-    <groupId>com.example</groupId>
-    <artifactId>myproject</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-    <!-- Inherit defaults from Spring Boot -->
-    <parent>
-        <groupId>org.springframework.boot</groupId>
-        <artifactId>spring-boot-starter-parent</artifactId>
-        <version>1.4.2.RELEASE</version>
-    </parent>
-    <!-- Add typical dependencies for a web application -->
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-    </dependencies>
-    <!-- Package as an executable jar -->
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
-</project>
-```
-
 ## Preparation 
 1. Install [Python](https://www.python.org/downloads/)
 2. Install  [Django](https://github.com/django/django)
@@ -59,9 +25,9 @@ post-card-type: image
 1. Create a Django project and an app. I created it with a name django-tutorial and music
 	
 	```
-    $ django-admin startproject django-tutorial	
-    $ cd django-tutorial
-    $ python manage.py startapp music
+$ django-admin startproject django-tutorial	
+$ cd django-tutorial
+$ python manage.py startapp music
 ```
 
 2. Add rest_framework and the app name to the installed apps in settings.py
@@ -81,7 +47,8 @@ post-card-type: image
 		
     ```
     from django.db import models
-    # Create your models here.
+  
+	# Create your models here.
     class Music(models.Model):
         song = models.TextField()
         singer = models.TextField()
@@ -94,9 +61,9 @@ post-card-type: image
 4. Create database in SQLite (change to `python3` if you are using Python 3.0+)
 
 ```
-    python manage.py makemigrations
-    python manage.py migrate
-    ```
+python manage.py makemigrations
+python manage.py migrate
+```
 		
 5. Create a music/serializers.py which should look like the below way.
  
