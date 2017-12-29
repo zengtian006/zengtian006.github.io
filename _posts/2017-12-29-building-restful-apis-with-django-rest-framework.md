@@ -60,10 +60,10 @@ $ python manage.py startapp music
  
 4. Create database in SQLite (change to `python3` if you are using Python 3.0+)
 
-```
-python manage.py makemigrations
-python manage.py migrate
-```
+	```
+	python manage.py makemigrations
+	python manage.py migrate
+	```
 		
 5. Create a music/serializers.py which should look like the below way.
  
@@ -74,11 +74,11 @@ python manage.py migrate
         class Meta:
             model = Music
             fields = ('id', 'song', 'singer', 'last_modify_date', 'created')
-    ```
+ ```
 		
 6. Create a music/view.py and enable CRUD
 
-```
+ ```
     from musics.models import Music
     from musics.serializers import MusicSerializer
     from rest_framework import viewsets
@@ -86,22 +86,22 @@ python manage.py migrate
     class MusicViewSet(viewsets.ModelViewSet):
         queryset = Music.objects.all()
         serializer_class = MusicSerializer
-    ```
+  ```
 		
 7. Update the root urls.py
    
-	 ```
-    from django.conf.urls import url, include
-    from django.contrib import admin
-    from rest_framework.routers import DefaultRouter
-    from musics import views
-    router = DefaultRouter()
-    router.register(r'music', views.MusicViewSet)
-    urlpatterns = [
-        url(r'^admin/', admin.site.urls),
-        url(r'^api/', include(router.urls))
-    ]
-    ```
+ ```
+		from django.conf.urls import url, include
+		from django.contrib import admin
+		from rest_framework.routers import DefaultRouter
+		from musics import views
+		router = DefaultRouter()
+		router.register(r'music', views.MusicViewSet)
+		urlpatterns = [
+				url(r'^admin/', admin.site.urls),
+				url(r'^api/', include(router.urls))
+		]
+	```
 		
 8. Finally start server, the default port is 8000 (change to `python3` if you are using Python 3.0+)
  

@@ -126,16 +126,15 @@ $ python manage.py startapp music
   </li>
   <li>
     <p>Create database in SQLite (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
-  </li>
-</ol>
 
-<p><code class="highlighter-rouge">
-python manage.py makemigrations
-python manage.py migrate
+    <p><code class="highlighter-rouge">
+ python manage.py makemigrations
+ python manage.py migrate
 </code></p>
-
-<ol>
-  <li>Create a music/serializers.py which should look like the below way.</li>
+  </li>
+  <li>
+    <p>Create a music/serializers.py which should look like the below way.</p>
+  </li>
 </ol>
 
 <p><code class="highlighter-rouge">
@@ -145,7 +144,7 @@ python manage.py migrate
         class Meta:
             model = Music
             fields = ('id', 'song', 'singer', 'last_modify_date', 'created')
-   </code></p>
+</code></p>
 
 <ol>
   <li>Create a music/view.py and enable CRUD</li>
@@ -159,28 +158,27 @@ python manage.py migrate
     class MusicViewSet(viewsets.ModelViewSet):
         queryset = Music.objects.all()
         serializer_class = MusicSerializer
-   </code></p>
+ </code></p>
 
 <ol>
-  <li>
-    <p>Update the root urls.py</p>
+  <li>Update the root urls.py</li>
+</ol>
 
-    <p><code class="highlighter-rouge">
- from django.conf.urls import url, include
- from django.contrib import admin
- from rest_framework.routers import DefaultRouter
- from musics import views
- router = DefaultRouter()
- router.register(r'music', views.MusicViewSet)
- urlpatterns = [
-     url(r'^admin/', admin.site.urls),
-     url(r'^api/', include(router.urls))
- ]
-</code></p>
-  </li>
-  <li>
-    <p>Finally start server, the default port is 8000 (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
-  </li>
+<p><code class="highlighter-rouge">
+		from django.conf.urls import url, include
+		from django.contrib import admin
+		from rest_framework.routers import DefaultRouter
+		from musics import views
+		router = DefaultRouter()
+		router.register(r'music', views.MusicViewSet)
+		urlpatterns = [
+				url(r'^admin/', admin.site.urls),
+				url(r'^api/', include(router.urls))
+		]
+	</code></p>
+
+<ol>
+  <li>Finally start server, the default port is 8000 (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</li>
 </ol>
 
 <p><code class="highlighter-rouge">
