@@ -163,28 +163,27 @@ $ python manage.py startapp music
   <li>
     <p>Update the root urls.py</p>
 
-    <p>```
-     from django.conf.urls import url, include
-     from django.contrib import admin
-     from rest_framework.routers import DefaultRouter
-     from musics import views</p>
+    <div class="highlighter-rouge"><pre class="highlight"><code> ```
+ from django.conf.urls import url, include
+ from django.contrib import admin
+ from rest_framework.routers import DefaultRouter
+ from musics import views
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> router = DefaultRouter()
+ router = DefaultRouter()
  router.register(r'music', views.MusicViewSet)
 
  urlpatterns = [
          url(r'^admin/', admin.site.urls),
          url(r'^api/', include(router.urls))
- ]    ```
+ ]
+ ```
 </code></pre>
     </div>
   </li>
   <li>
     <p>Finally start server, the default port is 8000 (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> ` python manage.py runserver [port] `
-</code></pre>
-    </div>
+    <p><code class="highlighter-rouge">python manage.py runserver [port]</code></p>
   </li>
 </ol>
 

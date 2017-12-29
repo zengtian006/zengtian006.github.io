@@ -91,7 +91,7 @@ $ python manage.py startapp music
 
 7. Update the root urls.py
 
-	  ```
+		```
 		from django.conf.urls import url, include
 		from django.contrib import admin
 		from rest_framework.routers import DefaultRouter
@@ -104,11 +104,11 @@ $ python manage.py startapp music
 				url(r'^admin/', admin.site.urls),
 				url(r'^api/', include(router.urls))
 		]
-	  ```
+		```
 
 8. Finally start server, the default port is 8000 (change to `python3` if you are using Python 3.0+)
 
-		` python manage.py runserver [port] `
+	`python manage.py runserver [port]`
 
 ## Let's test our API now
 * Create new music
@@ -119,8 +119,8 @@ $ python manage.py startapp music
 
 		```
 		{
-		    singer:
-		    song:
+			singer:
+			song:
 		}
 		```
 
@@ -136,8 +136,8 @@ $ python manage.py startapp music
 
 		```
 		{
-		    singer:
-		    song:
+			singer:
+			song:
 		}
 		```
 
