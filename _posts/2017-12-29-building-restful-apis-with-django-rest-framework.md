@@ -60,10 +60,10 @@ $ python manage.py startapp music
 
 4. Create database in SQLite (change to `python3` if you are using Python 3.0+)
 
-		```
-		python manage.py makemigrations
-		python manage.py migrate
-		```
+	```
+	python manage.py makemigrations
+	python manage.py migrate
+	```
 
 5. Create a music/serializers.py which should look like the below way.
 
@@ -91,24 +91,26 @@ $ python manage.py startapp music
 
 7. Update the root urls.py
 
-		```
-		from django.conf.urls import url, include
-		from django.contrib import admin
-		from rest_framework.routers import DefaultRouter
-		from musics import views
+	```
+	from django.conf.urls import url, include
+	from django.contrib import admin
+	from rest_framework.routers import DefaultRouter
+	from musics import views
 
-		router = DefaultRouter()
-		router.register(r'music', views.MusicViewSet)
+	router = DefaultRouter()
+	router.register(r'music', views.MusicViewSet)
 
-		urlpatterns = [
-				url(r'^admin/', admin.site.urls),
-				url(r'^api/', include(router.urls))
-		]
-		```
+	urlpatterns = [
+			url(r'^admin/', admin.site.urls),
+			url(r'^api/', include(router.urls))
+	]
+	```
 
 8. Finally start server, the default port is 8000 (change to `python3` if you are using Python 3.0+)
 
-	`python manage.py runserver [port]`
+	```
+	python manage.py runserver [port]
+	```
 
 ## Let's test our API now
 * Create new music
@@ -117,12 +119,12 @@ $ python manage.py startapp music
 
 	BODY:
 
-		```
-		{
-			singer:
-			song:
-		}
-		```
+	```
+	{
+		singer:
+		song:
+	}
+	```
 
 * Get all music info
 
@@ -133,13 +135,13 @@ $ python manage.py startapp music
 	PUT: http://127.0.0.1:8000/api/music/{id}
 
 	BODY:
-
-		```
-		{
-			singer:
-			song:
-		}
-		```
+       
+	```
+	{
+		singer:
+		song:
+	}
+	```
 
 * Delete specify music
 
