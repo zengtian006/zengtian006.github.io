@@ -114,15 +114,15 @@ $ python manage.py startapp music
     <p>```
  from django.db import models</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> # Create your models here.  class Music(models.Model):
- song = models.TextField()
- singer = models.TextField()
- last_modify_date = models.DateTimeField(auto_now=True)
- created = models.DateTimeField(auto_now_add=True)
- class Meta:
-     db_table = "music"  ```
-</code></pre>
-    </div>
+    <p># Create your models here.
+ class Music(models.Model):
+     song = models.TextField()
+     singer = models.TextField()
+     last_modify_date = models.DateTimeField(auto_now=True)
+     created = models.DateTimeField(auto_now_add=True)
+     class Meta:
+         db_table = “music”
+ ```</p>
   </li>
   <li>
     <p>Create database in SQLite (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
@@ -137,7 +137,7 @@ $ python manage.py startapp music
 
     <p><code class="highlighter-rouge">
  from rest_framework import serializers
-   from musics.models import Music
+ from musics.models import Music
  class MusicSerializer(serializers.ModelSerializer):
      class Meta:
          model = Music
@@ -152,11 +152,11 @@ $ python manage.py startapp music
  from musics.serializers import MusicSerializer
  from rest_framework import viewsets</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> # Create your views here.  class MusicViewSet(viewsets.ModelViewSet):
- queryset = Music.objects.all()
- serializer_class = MusicSerializer    ```
-</code></pre>
-    </div>
+    <p># Create your views here.
+ class MusicViewSet(viewsets.ModelViewSet):
+     queryset = Music.objects.all()
+     serializer_class = MusicSerializer
+   ```</p>
   </li>
   <li>
     <p>Update the root urls.py</p>
@@ -190,7 +190,7 @@ $ python manage.py startapp music
   <li>
     <p>Create new music</p>
 
-    <p>POST: http://127.0.0.1:8000/api/music/</p>
+    <p>POST:  http://127.0.0.1:8000/api/music/</p>
 
     <p>BODY:</p>
 
@@ -204,12 +204,12 @@ $ python manage.py startapp music
   <li>
     <p>Get all music info</p>
 
-    <p>GET: http://127.0.0.1:8000/api/music/</p>
+    <p>GET:  http://127.0.0.1:8000/api/music/</p>
   </li>
   <li>
     <p>Update info for specify music (PATCH: update part of info)</p>
 
-    <p>PUT: http://127.0.0.1:8000/api/music/{id}</p>
+    <p>PUT:  http://127.0.0.1:8000/api/music/{id}</p>
 
     <p>BODY:</p>
 
@@ -223,7 +223,7 @@ $ python manage.py startapp music
   <li>
     <p>Delete specify music</p>
 
-    <p>DELETE: http://127.0.0.1:8000/api/music/{id}</p>
+    <p>DELETE:  http://127.0.0.1:8000/api/music/{id}</p>
   </li>
 </ul>
 

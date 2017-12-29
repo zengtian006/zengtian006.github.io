@@ -48,7 +48,7 @@ $ python manage.py startapp music
     ```
     from django.db import models
 
-		# Create your models here.
+	# Create your models here.
     class Music(models.Model):
         song = models.TextField()
         singer = models.TextField()
@@ -69,7 +69,7 @@ $ python manage.py startapp music
 
 	  ```
     from rest_framework import serializers
-	  from musics.models import Music
+	from musics.models import Music
     class MusicSerializer(serializers.ModelSerializer):
         class Meta:
             model = Music
@@ -83,7 +83,7 @@ $ python manage.py startapp music
     from musics.serializers import MusicSerializer
     from rest_framework import viewsets
 
-		# Create your views here.
+	# Create your views here.
     class MusicViewSet(viewsets.ModelViewSet):
         queryset = Music.objects.all()
         serializer_class = MusicSerializer
@@ -115,7 +115,7 @@ $ python manage.py startapp music
 ## Let's test our API now
 * Create new music
 
-	POST: http://127.0.0.1:8000/api/music/
+	POST:  http://127.0.0.1:8000/api/music/
 
 	BODY:
 
@@ -128,11 +128,11 @@ $ python manage.py startapp music
 
 * Get all music info
 
-	GET: http://127.0.0.1:8000/api/music/
+	GET:  http://127.0.0.1:8000/api/music/
 
 * Update info for specify music (PATCH: update part of info)
 
-	PUT: http://127.0.0.1:8000/api/music/{id}
+	PUT:  http://127.0.0.1:8000/api/music/{id}
 
 	BODY:
        
@@ -145,4 +145,4 @@ $ python manage.py startapp music
 
 * Delete specify music
 
-	DELETE: http://127.0.0.1:8000/api/music/{id}
+	DELETE:  http://127.0.0.1:8000/api/music/{id}
