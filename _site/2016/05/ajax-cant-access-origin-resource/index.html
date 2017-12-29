@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -63,29 +63,33 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2>问题现象</h2>
+        <h2 id="section">问题现象</h2>
 
 <p>当出现跨域访问的时候， ajax 通常会报类似如下错误：</p>
 
 <blockquote>
-<p>XMLHttpRequest cannot load <a href="http://localhost:8000/simple/api/users/me/login">http://localhost:8000/simple/api/users/me/login</a>. Response to preflight request doesn&#39;t pass access control check: No &#39;Access-Control-Allow-Origin&#39; header is present on the requested resource. Origin &#39;<a href="http://localhost:8080">http://localhost:8080</a>&#39; is therefore not allowed access.</p>
+
+  <p>XMLHttpRequest cannot load http://localhost:8000/simple/api/users/me/login. Response to preflight request doesn’t pass access control check: No ‘Access-Control-Allow-Origin’ header is present on the requested resource. Origin ‘http://localhost:8080’ is therefore not allowed access.</p>
 </blockquote>
 
-<h2>解决办法</h2>
+<h2 id="section-1">解决办法</h2>
 
-<h3>Tomcat设置允许跨域访问</h3>
+<h3 id="tomcat">Tomcat设置允许跨域访问</h3>
 
 <p>这里描述以Tomcat为Web服务器情况下的解决办法，在JavaWeb项目中WEB-INF文件夹下的web.xml中加入如下配置即可。</p>
-<figure class="highlight"><pre><code class="language-xml" data-lang="xml">&lt;!-- cors filter --&gt;
-&lt;filter&gt;
-    &lt;filter-name&gt;CorsFilter&lt;/filter-name&gt;
-    &lt;filter-class&gt;org.apache.catalina.filters.CorsFilter&lt;/filter-class&gt;
-&lt;/filter&gt;
-&lt;filter-mapping&gt;
-    &lt;filter-name&gt;CorsFilter&lt;/filter-name&gt;
-    &lt;url-pattern&gt;/*&lt;/url-pattern&gt;
-&lt;/filter-mapping&gt;
-</code></pre></figure>
+
+<p>```xml
+<!-- cors filter --></p>
+<filter>
+	<filter-name>CorsFilter</filter-name>
+	<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>CorsFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+<p>```</p>
+
 <p><strong>注意:</strong> org.apache.catalina.filters.CorsFilter 下面有好几个配置选项，上面没有配置时就采用系统的默认配置。在实际生产环境要根据需要进行配置来提高安全性。比如 cors.allowed.origins 配置入汛访问的源地址，默认为所有，即 * 。此外还有 fors.allowed.methods ，cors.allowed.headers 等等。具体配置细节可以参考 <a href="https://tomcat.apache.org/tomcat-7.0-doc/config/filter.html">https://tomcat.apache.org/tomcat-7.0-doc/config/filter.html</a> 中 CORS Filter 章节。</p>
 
     </div>
@@ -129,7 +133,7 @@
                     <div class="card-body">
                         <div class="card-title">CentOS 6.4 x32 安装 MySQL</div>
                         <div class="card-description card-description--clamp-0">
-                            MySQL安装这里介绍以 CentOS6.4 X36 安装为例。检测系统是否自带安装 mysql；yum list installed | grep mysql删除系统自带的 mysql 及其依赖命令；yum -y remove mysql-libs.x86_64给 CentOS 添加 rpm 源，并且选择较新的源命令；wget dev.mysql.com/get/mysql-communi...
+                            MySQL安装这里介绍以 CentOS6.4 X36 安装为例。      检测系统是否自带安装 mysql；    sql yum list installed | grep mysql        删除系统自带的 mysql 及其依赖命令；    sql yum -y remove mysql-libs.x86_64        给 CentOS 添加 rpm 源，并且选择较新的源命...
                         </div>
                     </div>
                     <div class="card-hero">

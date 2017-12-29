@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -63,71 +63,116 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2>MySQL安装</h2>
+        <h2 id="mysql">MySQL安装</h2>
 
 <p>这里介绍以 CentOS6.4 X36 安装为例。</p>
 
 <ol>
-<li><p>检测系统是否自带安装 mysql；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">yum list installed | grep mysql
-</code></pre></figure></li>
-<li><p>删除系统自带的 mysql 及其依赖命令；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">yum -y remove mysql-libs.x86_64
-</code></pre></figure></li>
-<li><p>给 CentOS 添加 rpm 源，并且选择较新的源命令；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">wget dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
-yum localinstall mysql-community-release-el6-5.noarch.rpm
-yum repolist all | grep mysql
-yum-config-manager --disable mysql55-community
-yum-config-manager --disable mysql56-community
-yum-config-manager --enable mysql57-community-dmr
-yum repolist enabled | grep mysql
-</code></pre></figure></li>
-<li><p>安装 mysql 服务器命令；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">yum install mysql-community-server
-</code></pre></figure></li>
-<li><p>启动 mysql 命令；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">service mysqld start
-</code></pre></figure></li>
-<li><p>查看 mysql 是否自启动，并且设置开启自启动命令；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">chkconfig --list | grep mysqld
-chkconfig mysqld on
-</code></pre></figure></li>
-<li><p>mysql 安全设置命令；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">mysql_secure_installation
-</code></pre></figure></li>
+  <li>
+    <p>检测系统是否自带安装 mysql；</p>
+
+    <p><code class="highlighter-rouge">sql
+ yum list installed | grep mysql
+</code></p>
+  </li>
+  <li>
+    <p>删除系统自带的 mysql 及其依赖命令；</p>
+
+    <p><code class="highlighter-rouge">sql
+ yum -y remove mysql-libs.x86_64
+</code></p>
+  </li>
+  <li>
+    <p>给 CentOS 添加 rpm 源，并且选择较新的源命令；</p>
+
+    <p><code class="highlighter-rouge">sql
+ wget dev.mysql.com/get/mysql-community-release-el6-5.noarch.rpm
+ yum localinstall mysql-community-release-el6-5.noarch.rpm
+ yum repolist all | grep mysql
+ yum-config-manager --disable mysql55-community
+ yum-config-manager --disable mysql56-community
+ yum-config-manager --enable mysql57-community-dmr
+ yum repolist enabled | grep mysql
+</code></p>
+  </li>
+  <li>
+    <p>安装 mysql 服务器命令；</p>
+
+    <p><code class="highlighter-rouge">sql
+ yum install mysql-community-server
+</code></p>
+  </li>
+  <li>
+    <p>启动 mysql 命令；</p>
+
+    <p><code class="highlighter-rouge">sql
+ service mysqld start
+</code></p>
+  </li>
+  <li>
+    <p>查看 mysql 是否自启动，并且设置开启自启动命令；</p>
+
+    <p><code class="highlighter-rouge">sql
+ chkconfig --list | grep mysqld
+ chkconfig mysqld on
+</code></p>
+  </li>
+  <li>
+    <p>mysql 安全设置命令；</p>
+
+    <p><code class="highlighter-rouge">sql
+ mysql_secure_installation
+</code></p>
+  </li>
 </ol>
 
-<h2>问题</h2>
+<h2 id="section">问题</h2>
 
-<h4>登录时提示密码错误</h4>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">[root@cloud aii-blog]# mysql_secure_installation
+<h4 id="section-1">登录时提示密码错误</h4>
 
-Securing the MySQL server deployment.
+<p>```sql
+[root@cloud aii-blog]# mysql_secure_installation</p>
 
-Enter password for user root:
-Error: Access denied for user &#39;root&#39;@&#39;localhost&#39; (using password: NO)
-</code></pre></figure>
+<p>Securing the MySQL server deployment.</p>
+
+<p>Enter password for user root:
+Error: Access denied for user ‘root’@’localhost’ (using password: NO)
+```</p>
+
 <p>解决方法</p>
 
 <ol>
-<li><p>跳过密码登录，修改 /etc/my.cnf 文件，在文件末尾添加下面代码，</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">skip-grant-tables
-</code></pre></figure></li>
-<li><p>重启服务；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">service mysqld restart
-</code></pre></figure></li>
-<li><p>重新连接，并修改密码；</p>
-<figure class="highlight"><pre><code class="language-sql" data-lang="sql">mysql -uroot -p // 连接数据库
-sql&gt; use mysql; // 使用 mysql
-sql&gt; update user set authentication_string=password(&#39;newpassword&#39;) where user=&#39;root&#39;; // 修改 root 用户密码
-sql&gt; exit; // 退出 mysql
-service mysqld reatart // 重启服务
-</code></pre></figure></li>
-<li><p>现在就可以使用新的密码登录了。</p></li>
+  <li>
+    <p>跳过密码登录，修改 /etc/my.cnf 文件，在文件末尾添加下面代码，</p>
+
+    <p><code class="highlighter-rouge">sql
+ skip-grant-tables
+</code></p>
+  </li>
+  <li>
+    <p>重启服务；</p>
+
+    <p><code class="highlighter-rouge">sql
+ service mysqld restart
+</code></p>
+  </li>
+  <li>
+    <p>重新连接，并修改密码；</p>
+
+    <p><code class="highlighter-rouge">sql
+ mysql -uroot -p // 连接数据库
+ sql&gt; use mysql; // 使用 mysql
+ sql&gt; update user set authentication_string=password('newpassword') where user='root'; // 修改 root 用户密码
+ sql&gt; exit; // 退出 mysql
+ service mysqld reatart // 重启服务
+</code></p>
+  </li>
+  <li>
+    <p>现在就可以使用新的密码登录了。</p>
+  </li>
 </ol>
 
-<h4>远程客户端不能连接数据库</h4>
+<h4 id="section-2">远程客户端不能连接数据库</h4>
 
 <p>详情可以参考 <a href="http://dba.stackexchange.com/questions/45806/cannot-change-root-access-in-mysql-to">Cannot change root access in MySQL to %</a> 。</p>
 

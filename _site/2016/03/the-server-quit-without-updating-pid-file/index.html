@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -64,14 +64,20 @@
 <div class="page-wrapper">
     <div class="container--text">
         <p>今天在命令行启动MySQL的时候, 报了一个错误, 无法启动. 如下.</p>
-<figure class="highlight"><pre><code class="language-text" data-lang="text">.ERROR! The server quit without updating PID file (/usr/local/var/mysql/WngLMng-MacBook.local.pid).
-</code></pre></figure>
-<p><img src="https://ww3.sinaimg.cn/large/906cb9dbgw1f9ilmfmcqxj21hw0xogt3.jpg" alt=""></p>
+
+<p><code class="highlighter-rouge">
+.ERROR! The server quit without updating PID file (/usr/local/var/mysql/WngLMng-MacBook.local.pid).
+</code></p>
+
+<p><img src="https://ww3.sinaimg.cn/large/906cb9dbgw1f9ilmfmcqxj21hw0xogt3.jpg" alt="" /></p>
 
 <p>解决办法如下, 将MySQL下的对应的err文件删除即可.</p>
-<figure class="highlight"><pre><code class="language-text" data-lang="text">$ rm -r /usr/local/var/mysql/WngLMng-MacBook.local.err
-</code></pre></figure>
-<p><img src="https://ww4.sinaimg.cn/large/906cb9dbgw1f9ilmv0cfej21ia0ykajp.jpg" alt=""></p>
+
+<p><code class="highlighter-rouge">
+$ rm -r /usr/local/var/mysql/WngLMng-MacBook.local.err
+</code></p>
+
+<p><img src="https://ww4.sinaimg.cn/large/906cb9dbgw1f9ilmv0cfej21ia0ykajp.jpg" alt="" /></p>
 
 <p>OK!</p>
 

@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -63,40 +63,46 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2>Maven依赖</h2>
+        <h2 id="maven">Maven依赖</h2>
 
 <p>搜索maven依赖时，可使用<a href="http://search.maven.org/">Maven仓库</a>进行搜索。</p>
 
 <p>Hibernate Validator依赖如下：</p>
-<figure class="highlight"><pre><code class="language-xml" data-lang="xml">&lt;dependency&gt;
-    &lt;groupId&gt;org.hibernate&lt;/groupId&gt;
-    &lt;artifactId&gt;hibernate-validator&lt;/artifactId&gt;
-    &lt;version&gt;4.3.1.Final&lt;/version&gt;
-&lt;/dependency&gt;
-</code></pre></figure>
-<h2>校验规则</h2>
-<figure class="highlight"><pre><code class="language-text" data-lang="text">Bean Validation 中内置的 constraint
-@Null   被注释的元素必须为 null
-@NotNull    被注释的元素必须不为 null
-@AssertTrue     被注释的元素必须为 true
-@AssertFalse    被注释的元素必须为 false
-@Min(value)     被注释的元素必须是一个数字，其值必须大于等于指定的最小值
-@Max(value)     被注释的元素必须是一个数字，其值必须小于等于指定的最大值
-@DecimalMin(value)  被注释的元素必须是一个数字，其值必须大于等于指定的最小值
-@DecimalMax(value)  被注释的元素必须是一个数字，其值必须小于等于指定的最大值
-@Size(max=, min=)   被注释的元素的大小必须在指定的范围内
-@Digits (integer, fraction)     被注释的元素必须是一个数字，其值必须在可接受的范围内
-@Past   被注释的元素必须是一个过去的日期
-@Future     被注释的元素必须是一个将来的日期
-@Pattern(regex=,flag=)  被注释的元素必须符合指定的正则表达式
 
-Hibernate Validator 附加的 constraint
+<p>```xml</p>
+<dependency>
+	<groupid>org.hibernate</groupid>
+	<artifactid>hibernate-validator</artifactid>
+	<version>4.3.1.Final</version>
+</dependency>
+<p>```</p>
+
+<h2 id="section">校验规则</h2>
+
+<p>```
+Bean Validation 中内置的 constraint
+@Null 	被注释的元素必须为 null
+@NotNull 	被注释的元素必须不为 null
+@AssertTrue 	被注释的元素必须为 true
+@AssertFalse 	被注释的元素必须为 false
+@Min(value) 	被注释的元素必须是一个数字，其值必须大于等于指定的最小值
+@Max(value) 	被注释的元素必须是一个数字，其值必须小于等于指定的最大值
+@DecimalMin(value) 	被注释的元素必须是一个数字，其值必须大于等于指定的最小值
+@DecimalMax(value) 	被注释的元素必须是一个数字，其值必须小于等于指定的最大值
+@Size(max=, min=) 	被注释的元素的大小必须在指定的范围内
+@Digits (integer, fraction) 	被注释的元素必须是一个数字，其值必须在可接受的范围内
+@Past 	被注释的元素必须是一个过去的日期
+@Future 	被注释的元素必须是一个将来的日期
+@Pattern(regex=,flag=) 	被注释的元素必须符合指定的正则表达式</p>
+
+<p>Hibernate Validator 附加的 constraint
 @NotBlank(message =)   验证字符串非null，且长度必须大于0
-@Email  被注释的元素必须是电子邮箱地址
-@Length(min=,max=)  被注释的字符串的大小必须在指定的范围内
-@NotEmpty   被注释的字符串的必须非空
-@Range(min=,max=,message=)  被注释的元素必须在合适的范围内
-</code></pre></figure>
+@Email 	被注释的元素必须是电子邮箱地址
+@Length(min=,max=) 	被注释的字符串的大小必须在指定的范围内
+@NotEmpty 	被注释的字符串的必须非空
+@Range(min=,max=,message=) 	被注释的元素必须在合适的范围内
+```</p>
+
     </div>
 </div>
 
@@ -138,7 +144,7 @@ Hibernate Validator 附加的 constraint
                         <div class="card-title card-title--articleIfNoImage">Linux下安装Maven</div>
                         <p class="card-description card-description--clamp-14">“linux install maven”</p>
                         <p class="card-description card-article-preview">
-                            简介Apache Maven，是一个软件（特别是Java软件）项目管理及自动构建工具，由Apache软件基金会所提供。基于项目对象模型（POM）概念，Maven利用一个中央信息片断能管理一个项目的构建、报告和文档等步骤。曾是Jakarta项目的子项目，现为独立Apache项目。准备Maven（这里以最新的3.3版本为例。注意：如果使用3.3版本，那么你的JDK版本最低应为1.7，这些可以在官方网站中看到。）开始首先下载Maven3.3.3，你可以从官网直接下载，或在终端中使用命令下载，解压，然后移动到你想要安装的目录当中，例如我是移动到了/home/sunmoon/wnglmng/dev这个目录下：sunmoon@sunmoon-io:~$ wget http://apache.fay...
+                            简介Apache Maven，是一个软件（特别是Java软件）项目管理及自动构建工具，由Apache软件基金会所提供。基于项目对象模型（POM）概念，Maven利用一个中央信息片断能管理一个项目的构建、报告和文档等步骤。曾是Jakarta项目的子项目，现为独立Apache项目。准备Maven（这里以最新的3.3版本为例。注意：如果使用3.3版本，那么你的JDK版本最低应为1.7，这些可以在官方网站中看到。）开始首先下载Maven3.3.3，你可以从官网直接下载，或在终端中使用命令下载，解压，然后移动到你想要安装的目录当中，例如我是移动到了/home/sunmoon/wnglmng/dev这个目录下：bashsunmoon@sunmoon-io:~$ wget http://apache...
                         </p>
                         <p></p>
                     </div>

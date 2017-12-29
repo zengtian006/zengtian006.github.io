@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -63,50 +63,65 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2>Shadowsocks 服务端安装</h2>
+        <h2 id="shadowsocks-">Shadowsocks 服务端安装</h2>
 
-<h3>Debian / Ubuntu 安装</h3>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">$ apt-get install python-pip
-$ pip install shadowsocks
-</code></pre></figure>
-<h3>CentOS 安装</h3>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">$ yum install python-setuptools &amp;&amp; easy_install pip
-$ pip install shadowsocks
-</code></pre></figure>
-<h2>Shadowsocks 配置</h2>
+<h3 id="debian--ubuntu-">Debian / Ubuntu 安装</h3>
 
-<p><code>vim /etc/shadowsocks.json</code> 创建 <em>/etc/shadowsocks.json</em> 文件，添加如下内容</p>
-<figure class="highlight"><pre><code class="language-js" data-lang="js">{
-    &quot;server&quot;:&quot;0.0.0.0&quot;,
-    &quot;server_port&quot;:8388,
-    &quot;local_port&quot;:1080,
-    &quot;password&quot;:&quot;your_password&quot;,
-    &quot;timeout&quot;:600,
-    &quot;method&quot;:&quot;aes-256-cfb&quot;,
-    &quot;auth&quot;: true
+<p><code class="highlighter-rouge">bash
+$ apt-get install python-pip
+$ pip install shadowsocks
+</code></p>
+
+<h3 id="centos-">CentOS 安装</h3>
+
+<p><code class="highlighter-rouge">bash
+$ yum install python-setuptools &amp;&amp; easy_install pip
+$ pip install shadowsocks
+</code></p>
+
+<h2 id="shadowsocks--1">Shadowsocks 配置</h2>
+
+<p><code class="highlighter-rouge">vim /etc/shadowsocks.json</code> 创建 <em>/etc/shadowsocks.json</em> 文件，添加如下内容</p>
+
+<p><code class="highlighter-rouge">js
+{
+    "server":"0.0.0.0",
+    "server_port":8388,
+    "local_port":1080,
+    "password":"your_password",
+    "timeout":600,
+    "method":"aes-256-cfb",
+    "auth": true
 }
-</code></pre></figure>
-<h2>Shadowsocks 命令</h2>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">$ ssserver -c /etc/shadowsocks.json -d start // 启动
+</code></p>
+
+<h2 id="shadowsocks--2">Shadowsocks 命令</h2>
+
+<p><code class="highlighter-rouge">bash
+$ ssserver -c /etc/shadowsocks.json -d start // 启动
 $ ssserver -c /etc/shadowsocks.json -d restart // 重启
 $ ssserver -c /etc/shadowsocks.json -d stop // 关闭
-</code></pre></figure>
+</code></p>
+
 <p>最后记得开发 8388 端口</p>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">$ /sbin/iptables -I INPUT -p tcp --dport 8388 -j ACCEPT
-</code></pre></figure>
-<h2>客户端配置</h2>
 
-<p>到 <a href="https://shadowsocks.org/en/download/clients.html">https://shadowsocks.org/en/download/clients.html</a> 下载客户端，然后输入你的配置即可</p>
+<p><code class="highlighter-rouge">bash
+$ /sbin/iptables -I INPUT -p tcp --dport 8388 -j ACCEPT
+</code></p>
 
-<p><img src="https://ww3.sinaimg.cn/mw690/906cb9dbjw1fb1wtxe06kj20sg0hyq4w.jpg" alt=""></p>
+<h2 id="section">客户端配置</h2>
+
+<p>到 https://shadowsocks.org/en/download/clients.html 下载客户端，然后输入你的配置即可</p>
+
+<p><img src="https://ww3.sinaimg.cn/mw690/906cb9dbjw1fb1wtxe06kj20sg0hyq4w.jpg" alt="" /></p>
 
 <p><strong>注意</strong> 如果希望服务一直在后台中跑下去，可以在 screen 中执行以上操作，这样即使关闭 SSH 连接，服务也会一直在服务器中运行。</p>
 
-<h2>Iterm 代理</h2>
+<h2 id="iterm-">Iterm 代理</h2>
 
 <ul>
-<li><a href="https://segmentfault.com/a/1190000004607285">使用shadowsocks及 ProxyChains-NG 实现终端(iterm)下代理</a></li>
-<li><a href="http://www.jianshu.com/p/bee7c63c3d50">MacOS 让终端命令使用全局代理</a></li>
+  <li><a href="https://segmentfault.com/a/1190000004607285">使用shadowsocks及 ProxyChains-NG 实现终端(iterm)下代理</a></li>
+  <li><a href="http://www.jianshu.com/p/bee7c63c3d50">MacOS 让终端命令使用全局代理</a></li>
 </ul>
 
     </div>
@@ -150,7 +165,7 @@ $ ssserver -c /etc/shadowsocks.json -d stop // 关闭
                         <div class="card-title card-title--articleIfNoImage">浏览器中异步打开新标签页</div>
                         <p class="card-description card-description--clamp-14">“async open a new tab in brower”</p>
                         <p class="card-description card-article-preview">
-                            最近在做项目，需要异步获取服务器端返回的URL，然后在新的标签页中打开该URL（不要问我为什么不在当前页面加载，因为种种原因，用户不希望这个页面消失，只想在新标签页中处理工作，和我们的需求有很大关系）。然后发现各种问题，有的浏览器可以，但是有的浏览器被拦截，甚至有的浏览器既不被拦截又一点反应没有。主要原因是，当 window.open 为用户触发事件内部或者加载时，不会被拦截，一旦将弹出代码移动到 ajax 或者一段异步代码内部，马上就出现被拦截的表现了，因为浏览器认为这是不安全的行为，默认都会被拦截。在网上找了些资料，多多少少会有些问题，可能是我的姿势不对。最后实现代码如下：// open a new blank tabvar createNewInterviewTab = wind...
+                            最近在做项目，需要异步获取服务器端返回的URL，然后在新的标签页中打开该URL（不要问我为什么不在当前页面加载，因为种种原因，用户不希望这个页面消失，只想在新标签页中处理工作，和我们的需求有很大关系）。然后发现各种问题，有的浏览器可以，但是有的浏览器被拦截，甚至有的浏览器既不被拦截又一点反应没有。主要原因是，当 window.open 为用户触发事件内部或者加载时，不会被拦截，一旦将弹出代码移动到 ajax 或者一段异步代码内部，马上就出现被拦截的表现了，因为浏览器认为这是不安全的行为，默认都会被拦截。在网上找了些资料，多多少少会有些问题，可能是我的姿势不对。最后实现代码如下：javascript// open a new blank tabvar createNewInterview...
                         </p>
                         <p></p>
                     </div>

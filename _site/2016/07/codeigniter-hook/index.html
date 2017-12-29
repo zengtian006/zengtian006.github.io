@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -63,81 +63,99 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2>简介</h2>
+        <h2 id="section">简介</h2>
 
 <p>CodeIgniter 在启动的过程中，可以在某个地方让它自动的执行自己编写的函数，完成一个特定的功能，或者说成是脚本，这个时候就需要 CodeIgniter 中的钩子扩展。突然觉得和 Spring 中的 AOP 面向切面（Aspect）很类似，就是说在系统执行的什么时候会自动的执行其他功能代码，例如Before(前) 、
 After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)。</p>
 
-<h2>启用钩子</h2>
+<h2 id="section-1">启用钩子</h2>
 
 <ol>
-<li><p>在 application/config/config.php 文件里找到 $config[&#39;enable_hooks&#39;] = FALSE,将 FALSE 改 TRUE ，启动钩子。</p>
-<figure class="highlight"><pre><code class="language-php" data-lang="php">$config[&#39;enable_hooks&#39;] = TRUE;
-</code></pre></figure></li>
-<li><p>在 application/hooks 文件夹(没有自已新建)新建一任意文件名 TestHook.php 。</p>
-<figure class="highlight"><pre><code class="language-php" data-lang="php">&lt;?php
-class TestHook{
-    function display(){
-          echo &quot;Hello Hook&quot;;
-    }
-}
-?&gt;
-</code></pre></figure></li>
-<li><p>回到 application/config/hooks.php 里添加几行代码如下：</p>
-<figure class="highlight"><pre><code class="language-php" data-lang="php">$hook[&#39;pre_controller&#39;] = array(
-    &#39;class&#39;    =&gt; &#39;MyClass&#39;,
-    &#39;function&#39; =&gt; &#39;Myfunction&#39;,
-    &#39;filename&#39; =&gt; &#39;Myclass.php&#39;,
-    &#39;filepath&#39; =&gt; &#39;hooks&#39;,
-    &#39;params&#39;   =&gt; array(&#39;beer&#39;, &#39;wine&#39;, &#39;snacks&#39;)
-);
-// 注意
-// 这里可以同时定义多个钩子，只需要另起一段编写类似的代码即可。
-// 只需要将钩子数组变成二维数组即可。
-</code></pre></figure></li>
+  <li>
+    <p>在 application/config/config.php 文件里找到 $config[‘enable_hooks’] = FALSE,将 FALSE 改 TRUE ，启动钩子。</p>
+
+    <p><code class="highlighter-rouge">php
+ $config['enable_hooks'] = TRUE;
+</code></p>
+  </li>
+  <li>
+    <p>在 application/hooks 文件夹(没有自已新建)新建一任意文件名 TestHook.php 。</p>
+
+    <p><code class="highlighter-rouge">php
+ &lt;?php
+ class TestHook{
+     function display(){
+           echo "Hello Hook";
+     }
+ }
+ ?&gt;
+</code></p>
+  </li>
+  <li>
+    <p>回到 application/config/hooks.php 里添加几行代码如下：</p>
+
+    <p><code class="highlighter-rouge">php
+ $hook['pre_controller'] = array(
+     'class'    =&gt; 'MyClass',
+     'function' =&gt; 'Myfunction',
+     'filename' =&gt; 'Myclass.php',
+     'filepath' =&gt; 'hooks',
+     'params'   =&gt; array('beer', 'wine', 'snacks')
+ );
+ // 注意
+ // 这里可以同时定义多个钩子，只需要另起一段编写类似的代码即可。
+ // 只需要将钩子数组变成二维数组即可。
+</code></p>
+  </li>
 </ol>
 
 <p>Demo:</p>
 
 <blockquote>
-<figure class="highlight"><pre><code class="language-php" data-lang="php">// TestHook.php
+
+  <p><code class="highlighter-rouge">php
+// TestHook.php
 &lt;?php
 class TestHook{
     function display(){
-          echo &quot;Hello Hook&quot;;
+          echo "Hello Hook";
     }
 }
 ?&gt;
-</code></pre></figure><figure class="highlight"><pre><code class="language-php" data-lang="php">// application/config/hooks.php
-$hook[&#39;post_controller&#39;][] = array(
-    &#39;class&#39; =&gt; &#39;TestHook&#39;,
-    &#39;function&#39; =&gt; &#39;display&#39;,
-    &#39;filename&#39; =&gt; &#39;TestHook.php&#39;,
-    &#39;filepath&#39; =&gt; &#39;hooks&#39;,
-    &#39;params&#39;   =&gt; array()
+</code></p>
+
+  <p><code class="highlighter-rouge">php
+// application/config/hooks.php
+$hook['post_controller'][] = array(
+	'class' =&gt; 'TestHook',
+	'function' =&gt; 'display',
+	'filename' =&gt; 'TestHook.php',
+	'filepath' =&gt; 'hooks',
+	'params'   =&gt; array()
 );
-</code></pre></figure></blockquote>
+</code></p>
+</blockquote>
 
 <p><strong>注意：</strong></p>
 
 <ul>
-<li>class 你希望调用的类名，如果你更喜欢使用过程式的函数的话，这一项可以留空。</li>
-<li>function 你希望调用的方法或函数的名称。</li>
-<li>filename 包含你的类或函数的文件名。</li>
-<li>filepath 包含你的脚本文件的目录名。 注意： 你的脚本必须放在 application/ 目录里面，所以 filepath 是相对 application/ 目录的路径，举例来说，如果你的脚本位于 application/hooks/ ，那么 filepath 可以简单的设置为 &#39;hooks&#39; ，如果你的脚本位于 application/hooks/utilities/ ， 那么 filepath 可以设置为 &#39;hooks/utilities&#39; ，路径后面不用加斜线。</li>
-<li>params 你希望传递给你脚本的任何参数，可选。</li>
+  <li>class 你希望调用的类名，如果你更喜欢使用过程式的函数的话，这一项可以留空。</li>
+  <li>function 你希望调用的方法或函数的名称。</li>
+  <li>filename 包含你的类或函数的文件名。</li>
+  <li>filepath 包含你的脚本文件的目录名。 注意： 你的脚本必须放在 application/ 目录里面，所以 filepath 是相对 application/ 目录的路径，举例来说，如果你的脚本位于 application/hooks/ ，那么 filepath 可以简单的设置为 ‘hooks’ ，如果你的脚本位于 application/hooks/utilities/ ， 那么 filepath 可以设置为 ‘hooks/utilities’ ，路径后面不用加斜线。</li>
+  <li>params 你希望传递给你脚本的任何参数，可选。</li>
 </ul>
 
-<h2>挂钩点</h2>
+<h2 id="section-2">挂钩点</h2>
 
 <ul>
-<li>pre_system 在系统执行的早期调用，这个时候只有 基准测试类 和 钩子类 被加载了， 还没有执行到路由或其他的流程。</li>
-<li>pre_controller 在你的控制器调用之前执行，所有的基础类都已加载，路由和安全检查也已经完成。</li>
-<li>post_controller_constructor 在你的控制器实例化之后立即执行，控制器的任何方法都还尚未调用。</li>
-<li>post_controller 在你的控制器完全运行结束时执行。</li>
-<li>display_override 覆盖 _display() 方法，该方法用于在系统执行结束时向浏览器发送最终的页面结果。 这可以让你有自己的显示页面的方法。注意你可能需要使用 $this-&gt;CI =&amp; get_instance() 方法来获取 CI 超级对象，以及使用 $this-&gt;CI-&gt;output-&gt;get_output() 方法来 获取最终的显示数据。</li>
-<li>cache_override 使用你自己的方法来替代 输出类 中的 _display_cache() 方法，这让你有自己的缓存显示机制。</li>
-<li>post_system 在最终的页面发送到浏览器之后、在系统的最后期被调用。</li>
+  <li>pre_system 在系统执行的早期调用，这个时候只有 基准测试类 和 钩子类 被加载了， 还没有执行到路由或其他的流程。</li>
+  <li>pre_controller 在你的控制器调用之前执行，所有的基础类都已加载，路由和安全检查也已经完成。</li>
+  <li>post_controller_constructor 在你的控制器实例化之后立即执行，控制器的任何方法都还尚未调用。</li>
+  <li>post_controller 在你的控制器完全运行结束时执行。</li>
+  <li>display_override 覆盖 _display() 方法，该方法用于在系统执行结束时向浏览器发送最终的页面结果。 这可以让你有自己的显示页面的方法。注意你可能需要使用 $this-&gt;CI =&amp; get_instance() 方法来获取 CI 超级对象，以及使用 $this-&gt;CI-&gt;output-&gt;get_output() 方法来 获取最终的显示数据。</li>
+  <li>cache_override 使用你自己的方法来替代 输出类 中的 _display_cache() 方法，这让你有自己的缓存显示机制。</li>
+  <li>post_system 在最终的页面发送到浏览器之后、在系统的最后期被调用。</li>
 </ul>
 
     </div>

@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -63,61 +63,85 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2>简介</h2>
+        <h2 id="section">简介</h2>
 
 <p>Apache Maven，是一个软件（特别是Java软件）项目管理及自动构建工具，由Apache软件基金会所提供。基于项目对象模型（POM）概念，Maven利用一个中央信息片断能管理一个项目的构建、报告和文档等步骤。曾是Jakarta项目的子项目，现为独立Apache项目。</p>
 
-<h2>准备</h2>
+<h2 id="section-1">准备</h2>
 
 <p><a href="http://maven.apache.org">Maven</a>（这里以最新的3.3版本为例。注意：如果使用3.3版本，那么你的JDK版本最低应为1.7，这些可以在官方网站中看到。）</p>
 
-<h2>开始</h2>
+<h2 id="section-2">开始</h2>
 
 <p>首先下载Maven3.3.3，你可以从官网直接下载，或在终端中使用命令下载，解压，然后移动到你想要安装的目录当中，例如我是移动到了/home/sunmoon/wnglmng/dev这个目录下：</p>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sunmoon@sunmoon-io:~$ wget http://apache.fayea.com/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
+
+<p><code class="highlighter-rouge">bash
+sunmoon@sunmoon-io:~$ wget http://apache.fayea.com/maven/maven-3/3.3.3/binaries/apache-maven-3.3.3-bin.tar.gz
 sunmoon@sunmoon-io:~$ tar vxf apache-maven-3.3.3-bin.tar.gz
 sunmoon@sunmoon-io:~$ mv apache-maven-3.3.3 /home/sunmoon/wnglmng/dev
-</code></pre></figure>
+</code></p>
+
 <p>然后，用gedit打开/etc/profile文件：</p>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sunmoon@sunmoon-io:~$ sudo gedit /etc/profile
-</code></pre></figure>
+
+<p><code class="highlighter-rouge">bash
+sunmoon@sunmoon-io:~$ sudo gedit /etc/profile
+</code></p>
+
 <p>在编辑器中末尾添加如下代码：</p>
-<figure class="highlight"><pre><code class="language-text" data-lang="text">MAVEN_HOME=/home/sunmoon/wnglmng/dev/apache-maven-3.3.3
+
+<p><code class="highlighter-rouge">
+MAVEN_HOME=/home/sunmoon/wnglmng/dev/apache-maven-3.3.3
 export MAVEN_HOME
 export PATH=${PATH}:${MAVEN_HOME}/bin
-</code></pre></figure>
+</code></p>
+
 <p>然后ctrl+s保存，这个时候环境变量并未生效，在终端执行如下命令即可生效：</p>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sunmoon@sunmoon-io:~$ source /etc/profile
-</code></pre></figure>
+
+<p><code class="highlighter-rouge">bash
+sunmoon@sunmoon-io:~$ source /etc/profile
+</code></p>
+
 <p>检查是否生效，如果打印下面信息那么就是成功了：</p>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sunmoon@sunmoon-io:~$ mvn -v
+
+<p><code class="highlighter-rouge">bash
+sunmoon@sunmoon-io:~$ mvn -v
 Apache Maven 3.3.3 (7994120775791599e205a5524ec3e0dfe41d4a06; 2015-04-22T19:57:37+08:00)
 Maven home: /home/sunmoon/wnglmng/dev/apache-maven-3.3.3
 Java version: 1.7.0_79, vendor: Oracle Corporation
 Java home: /usr/lib/jvm/java-7-openjdk-i386/jre
 Default locale: en_US, platform encoding: UTF-8
-OS name: &quot;linux&quot;, version: &quot;3.13.0-66-generic&quot;, arch: &quot;i386&quot;, family: &quot;unix&quot;
-</code></pre></figure>
+OS name: "linux", version: "3.13.0-66-generic", arch: "i386", family: "unix"
+</code></p>
+
 <p>到这里我们就可简单修改一下Mavne的配置文件。找到apache-maven-3.3.3/conf/setting.xml文件，找到如下代码：</p>
-<figure class="highlight"><pre><code class="language-xml" data-lang="xml">  &lt;!-- localRepository
+
+<p>```xml
+  &lt;!– localRepository
    | The path to the local repository maven will use to store artifacts.
    |
-   | Default: ${user.home}/.m2/repository
-  &lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;
-  --&gt;
-</code></pre></figure>
+   | Default: ${user.home}/.m2/repository</p>
+<localrepository>/path/to/local/repo</localrepository>
+<p>–&gt;
+```</p>
+
 <p>我们可以修改复制最后一行代码在注释的下面，并修改成你想要将Maven仓库存放的位置，如下：</p>
-<figure class="highlight"><pre><code class="language-xml" data-lang="xml">  &lt;!-- localRepository
+
+<p>```xml
+  &lt;!– localRepository
    | The path to the local repository maven will use to store artifacts.
    |
-   | Default: ${user.home}/.m2/repository
-  &lt;localRepository&gt;/path/to/local/repo&lt;/localRepository&gt;
-  --&gt;
-  &lt;localRepository&gt;/home/sunmoon/wnglmng/dev/maven-repository&lt;/localRepository&gt;
-</code></pre></figure>
+   | Default: ${user.home}/.m2/repository</p>
+<localrepository>/path/to/local/repo</localrepository>
+<p>–&gt;</p>
+<localrepository>/home/sunmoon/wnglmng/dev/maven-repository</localrepository>
+<p>```</p>
+
 <p>最后，在终端中敲并回车执：</p>
-<figure class="highlight"><pre><code class="language-bash" data-lang="bash">sunmoon@sunmoon-io:~$ mvn help:system
-</code></pre></figure>
+
+<p><code class="highlighter-rouge">bash
+sunmoon@sunmoon-io:~$ mvn help:system
+</code></p>
+
 <p>这时候Maven就会从远程仓库开始下载一大堆依赖下来，可能会花费一段时间，你可以做些其他的。最后下载完成，你会发现/home/sunmoon/wnglmng/dev/maven-repository这个文件夹在你的磁盘上就出现了，这个就是Maven仓库。</p>
 
 <p>这样，我们的Maven就按算完成了。</p>

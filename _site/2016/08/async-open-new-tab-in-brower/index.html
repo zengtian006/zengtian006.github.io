@@ -12,7 +12,7 @@
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
-    <meta name="description" content="嗨，我是王立明，一名来自黑龙江省鹤岗市的男生。<br/>现于无线生活（北京），从事互联网开发工作。">
+    <meta name="description" content="Hi I'm Tim.">
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
@@ -70,8 +70,10 @@
 <p>在网上找了些资料，多多少少会有些问题，可能是我的姿势不对。</p>
 
 <p>最后实现代码如下：</p>
-<figure class="highlight"><pre><code class="language-javascript" data-lang="javascript">// open a new blank tab
-var createNewInterviewTab = window.open(&#39;about:blank&#39;, &#39;_blank&#39;);
+
+<p><code class="highlighter-rouge">javascript
+// open a new blank tab
+var createNewInterviewTab = window.open('about:blank', '_blank');
 $.ajax({
     // ...
 }).done(function(result) {
@@ -86,13 +88,14 @@ $.ajax({
         createNewInterviewTab.close();
     }
 });
-</code></pre></figure>
+</code></p>
+
 <p>到这里就结束了，就酱。</p>
 
 <p><strong>参考</strong></p>
 
 <ul>
-<li><a href="http://itindex.net/detail/52877-window.open-%E6%B5%8F%E8%A7%88%E5%99%A8">window.open被浏览器拦截的解决方案</a></li>
+  <li><a href="http://itindex.net/detail/52877-window.open-%E6%B5%8F%E8%A7%88%E5%99%A8">window.open被浏览器拦截的解决方案</a></li>
 </ul>
 
     </div>
@@ -136,7 +139,7 @@ $.ajax({
                         <div class="card-title card-title--articleIfNoImage">CodeIgniter 钩子</div>
                         <p class="card-description card-description--clamp-14">“CodeIgniter Hooks”</p>
                         <p class="card-description card-article-preview">
-                            简介CodeIgniter 在启动的过程中，可以在某个地方让它自动的执行自己编写的函数，完成一个特定的功能，或者说成是脚本，这个时候就需要 CodeIgniter 中的钩子扩展。突然觉得和 Spring 中的 AOP 面向切面（Aspect）很类似，就是说在系统执行的什么时候会自动的执行其他功能代码，例如Before(前) 、After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)。启用钩子在 application/config/config.php 文件里找到 $config[&#39;enable_hooks&#39;] = FALSE,将 FALSE 改 TRUE ，启动钩子。$config[&#39;enable_h...
+                            简介CodeIgniter 在启动的过程中，可以在某个地方让它自动的执行自己编写的函数，完成一个特定的功能，或者说成是脚本，这个时候就需要 CodeIgniter 中的钩子扩展。突然觉得和 Spring 中的 AOP 面向切面（Aspect）很类似，就是说在系统执行的什么时候会自动的执行其他功能代码，例如Before(前) 、After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)。启用钩子      在 application/config/config.php 文件里找到 $config[‘enable_hooks’] = FALSE,将 FALSE 改 TRUE ，启动钩子。    php $config['enable...
                         </p>
                         <p></p>
                     </div>
