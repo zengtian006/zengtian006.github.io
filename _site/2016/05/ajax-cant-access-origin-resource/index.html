@@ -128,20 +128,20 @@
         
         
         
-            <a href="/2016/04/centos-6.4-x32-install-mysql/">
+            <a href="/2016/03/the-server-quit-without-updating-pid-file/">
                 <div class="card card--article not-visible" >
                     <div class="card-body">
-                        <div class="card-title">CentOS 6.4 x32 安装 MySQL</div>
+                        <div class="card-title">The server quit without updating PID file.</div>
                         <div class="card-description card-description--clamp-0">
-                            MySQL安装这里介绍以 CentOS6.4 X36 安装为例。      检测系统是否自带安装 mysql；    sql yum list installed | grep mysql        删除系统自带的 mysql 及其依赖命令；    sql yum -y remove mysql-libs.x86_64        给 CentOS 添加 rpm 源，并且选择较新的源命...
+                            今天在命令行启动MySQL的时候, 报了一个错误, 无法启动. 如下..ERROR! The server quit without updating PID file (/usr/local/var/mysql/WngLMng-MacBook.local.pid).解决办法如下, 将MySQL下的对应的err文件删除即可.$ rm -r /usr/local/var/mysql/WngLM...
                         </div>
                     </div>
                     <div class="card-hero">
-                        <div class="card-image card-image--size-185" data-url="https://ww4.sinaimg.cn/mw690/906cb9dbgw1fayosx67eoj20we0f4juo.jpg"></div>
+                        <div class="card-image card-image--size-185" data-url="https://ww3.sinaimg.cn/mw690/906cb9dbgw1fayouoc4xij21kw0f5jxk.jpg"></div>
                     </div>
                     <div class="card-footer">
                         <div class="card-footer-wrapper" layout="row bottom-left">
-                            <div class="card-type is-notShownIfHover">2016-04-16</div>
+                            <div class="card-type is-notShownIfHover">2016-03-21</div>
                             <div class="card-tag is-notShownIfHover">@TimZeng</div>
                             <div class="card-tag is-shownIfHover">
                                 
@@ -159,21 +159,19 @@
         
         
         
-        
-            <a href="/2016/06/remote-host-identification-has-changed/">
-                <div class="card card--article not-visible" >
+            <a href="/2016/07/codeigniter-hook/">
+                <div class="card card--article not-visible">
                     <div class="card-body">
-                        <div class="card-title">REMOTE HOST IDENTIFICATION HAS CHANGED</div>
-                        <div class="card-description card-description--clamp-0">
-                            ```$ ssh 45.127.97.64@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@    WARNING: REMOTE HOST IDENTIFICATION HAS CHANGED!     @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@...
-                        </div>
-                    </div>
-                    <div class="card-hero">
-                        <div class="card-image card-image--size-185" data-url="https://ww3.sinaimg.cn/large/906cb9dbgw1fb2xyzt1mij20wk0duwmv.jpg"></div>
+                        <div class="card-title card-title--articleIfNoImage">CodeIgniter 钩子</div>
+                        <p class="card-description card-description--clamp-14">“CodeIgniter Hooks”</p>
+                        <p class="card-description card-article-preview">
+                            ## 简介CodeIgniter 在启动的过程中，可以在某个地方让它自动的执行自己编写的函数，完成一个特定的功能，或者说成是脚本，这个时候就需要 CodeIgniter 中的钩子扩展。突然觉得和 Spring 中的 AOP 面向切面（Aspect）很类似，就是说在系统执行的什么时候会自动的执行其他功能代码，例如Before(前) 、After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)。## 启用钩子1. 在 application/config/config.php 文件里找到 $config['enable_hooks'] = FALSE,将 FALSE 改 TRUE ，启动钩子。	```php	$config['ena...
+                        </p>
+                        <p></p>
                     </div>
                     <div class="card-footer">
                         <div class="card-footer-wrapper" layout="row bottom-left">
-                            <div class="card-type is-notShownIfHover">2016-06-18</div>
+                            <div class="card-type is-notShownIfHover">2016-07-09</div>
                             <div class="card-tag is-notShownIfHover">@TimZeng</div>
                             <div class="card-tag is-shownIfHover">
                                 
@@ -183,8 +181,9 @@
                             <div class="card-logo is-shownIfHover" self="right"></div>
                         </div>
                     </div>
-                 </div>
+                </div>
             </a>
+        
         
         
 
