@@ -106,37 +106,37 @@ $ python manage.py startapp music
 8. Finally start server, the default port is 8000 (change to `python3` if you are using Python 3.0+)
 
 		```
-		  python manage.py runserver [port]
+			python manage.py runserver [port]
 		```
 
 ## Let's test our API now
 * Create new music
 
-POST: http://127.0.0.1:8000/api/music/
-BODY:
+	POST: http://127.0.0.1:8000/api/music/
+	BODY:
 		```
-		{
-		    singer:
-		    song:
-		}
+			{
+			    singer:
+			    song:
+			}
 		```
 
 * Get all music info
 
-GET: http://127.0.0.1:8000/api/music/
+	GET: http://127.0.0.1:8000/api/music/
 
 * Update info for specify music (PATCH: update part of info)
 
-PUT: http://127.0.0.1:8000/api/music/{id}
+	PUT: http://127.0.0.1:8000/api/music/{id}
 
-BODY:
+	BODY:
 		```
-		{
-		    singer:
-		    song:
-		}
+			{
+			    singer:
+			    song:
+			}
 		```
 
 * Delete specify music
 
-DELETE: http://127.0.0.1:8000/api/music/{id}
+	DELETE: http://127.0.0.1:8000/api/music/{id}
