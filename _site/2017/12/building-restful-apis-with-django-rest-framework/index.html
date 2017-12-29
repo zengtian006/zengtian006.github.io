@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+    <!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/logo.png">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+
+    <title>Building RESTFul APIs with Django REST framework</title>
+
+    <meta name="keywords" content="Tim, TimZeng, 曾田">
+    <meta name="author" content="TimZeng">
+    <meta name="description" content="Hi I'm Tim.">
+
+    <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
+    <meta property="og:url" content="/">
+    <meta property="og:title" content="Building RESTFul APIs with Django REST framework">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="```    4.0.0    com.example    myproject    0.0.1-SNAPSHOT                org.springframework.boot        spring-boot-starter-parent        1.4.2.RELEASE    ...">
+
+    <!--   Core CSS Files   -->
+    <link href="//cdn.bootcss.com/flex-layout-attribute/1.0.3/css/flex-layout-attribute.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://zengtian006.github.io//2017/12/building-restful-apis-with-django-rest-framework/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
+</head>
+
+<body>
+    <div id="nav" layout="row top-left">
+    <div self="left">
+        <a href="/"><div class="logo logo-isNotVisIfMobile">Tim's Blog</div></a>
+        <a href="/"><div class="logo logo-isVisIfMobile"></div></a>
+    </div>
+    <div class="nav-isNotVisIfMobile">
+        <div class="item">
+            <a href="/tags">Tags</a>
+        </div>
+        <div class="item">
+            <a href="/videos">Videos</a>
+        </div>
+    </div>
+    <div class="nav-isVisIfMobile">
+        <div class="item">
+            <a href="/tags">Tags</a>
+        </div>
+        <div class="item">
+            <a href="/videos">Videos</a>
+        </div>
+    </div>
+</div>
+
+    <div id="content">
+        <div class="container container--header">
+    <h1 class="h1--home-title">Building RESTFul APIs with Django REST framework</h1>
+    <p></p>
+</div>
+
+        <link rel="stylesheet" type="text/css" href="/assets/css/article.css">
+
+<div class="page-wrapper">
+    <div class="container--text">
+        <p>```
+<?xml version="1.0" encoding="UTF-8"?></p>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemalocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelversion>4.0.0</modelversion>
+    <groupid>com.example</groupid>
+    <artifactid>myproject</artifactid>
+    <version>0.0.1-SNAPSHOT</version>
+    <!-- Inherit defaults from Spring Boot -->
+    <parent>
+        <groupid>org.springframework.boot</groupid>
+        <artifactid>spring-boot-starter-parent</artifactid>
+        <version>1.4.2.RELEASE</version>
+    </parent>
+    <!-- Add typical dependencies for a web application -->
+    <dependencies>
+        <dependency>
+            <groupid>org.springframework.boot</groupid>
+            <artifactid>spring-boot-starter-web</artifactid>
+        </dependency>
+    </dependencies>
+    <!-- Package as an executable jar -->
+    <build>
+        <plugins>
+            <plugin>
+                <groupid>org.springframework.boot</groupid>
+                <artifactid>spring-boot-maven-plugin</artifactid>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+<p>```</p>
+
+<h2 id="preparation">Preparation</h2>
+<ol>
+  <li>Install <a href="https://www.python.org/downloads/">Python</a></li>
+  <li>
+    <p>Install  <a href="https://github.com/django/django">Django</a></p>
+
+    <p><code class="highlighter-rouge">pip install django</code></p>
+
+    <p><em>If you are using Python 3.0+ please input the following command</em></p>
+
+    <p><code class="highlighter-rouge">pip3 install django</code></p>
+  </li>
+  <li>
+    <p>Install <a href="http://www.django-rest-framework.org/">Django-REST-framework</a></p>
+
+    <p><code class="highlighter-rouge">pip install djangorestframework</code> (change to <code class="highlighter-rouge">pip3</code> if you are using Python 3.0+)</p>
+  </li>
+</ol>
+
+<h2 id="creating-an-api-with-django-rest-framework">Creating an API with Django-rest-framework</h2>
+
+<ol>
+  <li>
+    <p>Create a Django project and an app. I created it with a name django-tutorial and music</p>
+
+    <p><code class="highlighter-rouge">
+ $ django-admin startproject django-tutorial	
+ $ cd django-tutorial
+ $ python manage.py startapp music
+</code></p>
+  </li>
+  <li>
+    <p>Add rest_framework and the app name to the installed apps in settings.py</p>
+
+    <p><code class="highlighter-rouge">
+ INSTALLED_APPS = (
+ ...
+ 'rest_framework',
+ 'music',
+ ...
+ )
+</code></p>
+  </li>
+  <li>
+    <p>Create Model and schema for database. (Django using SQLite as default, you can change other database you prefered in setting.py)</p>
+
+    <p>in music/models.py</p>
+
+    <p><code class="highlighter-rouge">
+ from django.db import models
+ # Create your models here.
+ class Music(models.Model):
+     song = models.TextField()
+     singer = models.TextField()
+     last_modify_date = models.DateTimeField(auto_now=True)
+     created = models.DateTimeField(auto_now_add=True)
+     class Meta:
+         db_table = "music"
+</code></p>
+  </li>
+  <li>
+    <p>Create database in SQLite (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
+  </li>
+</ol>
+
+<p><code class="highlighter-rouge">
+    python manage.py makemigrations
+    python manage.py migrate
+   </code></p>
+
+<ol>
+  <li>Create a music/serializers.py which should look like the below way.</li>
+</ol>
+
+<p><code class="highlighter-rouge">
+    from rest_framework import serializers
+	  from musics.models import Music
+    class MusicSerializer(serializers.ModelSerializer):
+        class Meta:
+            model = Music
+            fields = ('id', 'song', 'singer', 'last_modify_date', 'created')
+   </code></p>
+
+<ol>
+  <li>Create a music/view.py and enable CRUD</li>
+</ol>
+
+<p><code class="highlighter-rouge">
+    from musics.models import Music
+    from musics.serializers import MusicSerializer
+    from rest_framework import viewsets
+    # Create your views here.
+    class MusicViewSet(viewsets.ModelViewSet):
+        queryset = Music.objects.all()
+        serializer_class = MusicSerializer
+   </code></p>
+
+<ol>
+  <li>
+    <p>Update the root urls.py</p>
+
+    <p><code class="highlighter-rouge">
+ from django.conf.urls import url, include
+ from django.contrib import admin
+ from rest_framework.routers import DefaultRouter
+ from musics import views
+ router = DefaultRouter()
+ router.register(r'music', views.MusicViewSet)
+ urlpatterns = [
+     url(r'^admin/', admin.site.urls),
+     url(r'^api/', include(router.urls))
+ ]
+</code></p>
+  </li>
+  <li>
+    <p>Finally start server, the default port is 8000 (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
+  </li>
+</ol>
+
+<p><code class="highlighter-rouge">
+    python manage.py runserver [port]
+</code></p>
+
+<h2 id="lets-test-our-api-now">Let’s test our API now</h2>
+<ul>
+  <li>Create new music</li>
+</ul>
+
+<p>POST: http://127.0.0.1:8000/api/music/
+BODY: 
+<code class="highlighter-rouge"><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="err">singer:</span><span class="w">
+    </span><span class="err">song:</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></p>
+
+<ul>
+  <li>Get all music info</li>
+</ul>
+
+<p>GET: http://127.0.0.1:8000/api/music/</p>
+
+<ul>
+  <li>Update info for specify music (PATCH: update part of info)</li>
+</ul>
+
+<p>PUT: http://127.0.0.1:8000/api/music/{id}</p>
+
+<p>BODY: 
+<code class="highlighter-rouge"><span class="w">
+</span><span class="p">{</span><span class="w">
+    </span><span class="err">singer:</span><span class="w">
+    </span><span class="err">song:</span><span class="w"> 
+</span><span class="p">}</span><span class="w">
+</span></code></p>
+
+<ul>
+  <li>Delete specify music</li>
+</ul>
+
+<p>DELETE: http://127.0.0.1:8000/api/music/{id}</p>
+
+    </div>
+</div>
+
+<style type="text/css">
+    .ds-thread {
+        max-width: 680px;
+        margin: auto;
+    }
+</style>
+
+<!-- 多说评论框 start -->
+<!-- <div class="ds-thread" data-thread-key="/2017/12/building-restful-apis-with-django-rest-framework/" data-title=Building RESTFul APIs with Django REST framework data-url=https://zengtian006.github.io//2017/12/building-restful-apis-with-django-rest-framework/></div> -->
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+// var duoshuoQuery = {short_name:"wnglmng"};
+//     (function() {
+//         var ds = document.createElement('script');
+//         ds.type = 'text/javascript';ds.async = true;
+//         ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+//         ds.charset = 'UTF-8';
+//         (document.getElementsByTagName('head')[0]
+//          || document.getElementsByTagName('body')[0]).appendChild(ds);
+//     })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<div class="related_posts-container" style="max-width: 790px;">
+    <p class="related_posts-header">RELATED ARTICLES</p>
+
+    <div layout="rows center-spread">
+
+        
+        
+        
+        
+            <a href="/2017/03/spring-boot-Introduction/">
+                <div class="card card--article not-visible" >
+                    <div class="card-body">
+                        <div class="card-title">Spring Boot 参考指南之入门指南</div>
+                        <div class="card-description card-description--clamp-0">
+                            Spring Boot 介绍这个段落提供 Spring Boot 参考指南的简要综述。将它视作其他部分介绍的指引。你可以顺次阅读本参考指南，或者跳过你不感兴趣的部分。1.关于资料Spring Boot 参考指南现提供 html，pdf 以及 epub 版本，最新版可以访问 http://docs.spring.io/spring-boot/docs/current/reference。这些资...
+                        </div>
+                    </div>
+                    <div class="card-hero">
+                        <div class="card-image card-image--size-185" data-url="https://ww1.sinaimg.cn/mw690/906cb9dbly1fdoq1o4qe1j20q00d4qed"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-footer-wrapper" layout="row bottom-left">
+                            <div class="card-type is-notShownIfHover">2017-03-15</div>
+                            <div class="card-tag is-notShownIfHover">@TimZeng</div>
+                            <div class="card-tag is-shownIfHover">
+                                
+                                    code &nbsp;&nbsp;
+                                
+                            </div>
+                            <div class="card-logo is-shownIfHover" self="right"></div>
+                        </div>
+                    </div>
+                 </div>
+            </a>
+        
+        
+
+        
+
+    </div>
+</div>
+
+
+    </div>
+    <div id="footer" layout="rows center-left">
+    <div id="end-mark">
+        <div class="end-mark-icon"></div>
+        <p class="copyright">Tim's Blog © 2017&nbsp;&nbsp;·&nbsp;&nbsp;a coder in code factory</p>
+    </div>
+    <div id="footer-links" self="right">
+        <ul>
+            <!-- <a href="#"><li class="wechat" target="_blank"></li></a> -->
+            <a href="mailto:zengtian006@gmail.com" target="_blank"><li class="mail"></li></a>
+            <a href="http://weibo.com/zengtian006" target="_blank"><li class="weibo"></li></a>
+            <a href="https://github.com/zengtian006" target="_blank"><li class="github"></li></a>
+        </ul>
+    </div>
+</div>
+
+</body>
+<!--   Core JS Files   -->
+<script src="//cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/mixitup/2.1.11/jquery.mixitup.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+</html>
