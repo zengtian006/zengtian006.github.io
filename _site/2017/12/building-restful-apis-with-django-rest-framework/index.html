@@ -178,9 +178,7 @@ $ python manage.py startapp music
   <li>
     <p>Finally start server, the default port is 8000 (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
 
-    <div class="highlighter-rouge"><pre class="highlight"><code> ```
-     python manage.py runserver [port]
- ```
+    <div class="highlighter-rouge"><pre class="highlight"><code> `python manage.py runserver [port]`
 </code></pre>
     </div>
   </li>
@@ -191,14 +189,18 @@ $ python manage.py startapp music
   <li>
     <p>Create new music</p>
 
-    <p>POST: http://127.0.0.1:8000/api/music/
-  BODY:
-      <code class="highlighter-rouge"><span class="w">
-          </span><span class="p">{</span><span class="w">
-              </span><span class="err">singer:</span><span class="w">
-              </span><span class="err">song:</span><span class="w">
-          </span><span class="p">}</span><span class="w">
-     </span></code></p>
+    <p>POST: http://127.0.0.1:8000/api/music/</p>
+
+    <p>BODY:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  ```
+      {
+          singer:
+          song:
+      }
+  ```
+</code></pre>
+    </div>
   </li>
   <li>
     <p>Get all music info</p>
@@ -210,13 +212,16 @@ $ python manage.py startapp music
 
     <p>PUT: http://127.0.0.1:8000/api/music/{id}</p>
 
-    <p>BODY:
-      <code class="highlighter-rouge"><span class="w">
-          </span><span class="p">{</span><span class="w">
-              </span><span class="err">singer:</span><span class="w">
-              </span><span class="err">song:</span><span class="w">
-          </span><span class="p">}</span><span class="w">
-     </span></code></p>
+    <p>BODY:</p>
+
+    <div class="highlighter-rouge"><pre class="highlight"><code>  ```
+      {
+          singer:
+          song:
+      }
+  ```
+</code></pre>
+    </div>
   </li>
   <li>
     <p>Delete specify music</p>
