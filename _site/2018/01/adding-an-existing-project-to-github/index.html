@@ -8,7 +8,7 @@
     <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/logo.png">
     <link rel="icon" type="image/png" href="/assets/images/logo.png">
 
-    <title>Deploy Django Application with Docker</title>
+    <title>Adding an existing project to GitHub</title>
 
     <meta name="keywords" content="Tim, TimZeng, 曾田">
     <meta name="author" content="TimZeng">
@@ -16,16 +16,16 @@
 
     <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
     <meta property="og:url" content="/">
-    <meta property="og:title" content="Deploy Django Application with Docker">
+    <meta property="og:title" content="Adding an existing project to GitHub">
     <meta property="og:type" content="article">
-    <meta property="og:description" content="我们目前已经建立好了一个DRF 的 Application">
+    <meta property="og:description" content="  Create a new repository on GitHub. To avoid errors, do not initialize the new repository with README, license, or gitignore files. You can add these files ...">
 
     <!--   Core CSS Files   -->
     <link href="//cdn.bootcss.com/flex-layout-attribute/1.0.3/css/flex-layout-attribute.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="https://zengtian006.github.io//2018/01/deploy-django-application-with-docker/">
+    <link rel="canonical" href="https://zengtian006.github.io//2018/01/adding-an-existing-project-to-github/">
     <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
 </head>
 
@@ -55,7 +55,7 @@
 
     <div id="content">
         <div class="container container--header">
-    <h1 class="h1--home-title">Deploy Django Application with Docker</h1>
+    <h1 class="h1--home-title">Adding an existing project to GitHub</h1>
     <p></p>
 </div>
 
@@ -63,90 +63,36 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <p>我们目前已经建立好了一个DRF 的 <a href="https://github.com/zengtian006/Django-REST-framework">Application</a></p>
-
-<p>我们在 <code class="highlighter-rouge">Setting.py</code> 里面做一些调整，将之前的SQLite 数据库 改成 PostgreSQL
+        <ol>
+  <li>
+    <p><a href="https://help.github.com/articles/creating-a-new-repository/">Create a new repository</a> on GitHub. To avoid errors, do not initialize the new repository with README, license, or gitignore files. You can add these files after your project has been pushed to GitHub.</p>
+  </li>
+  <li>
+    <p>Initialize the local directory as a Git repository.
+<code class="highlighter-rouge">git init</code></p>
+  </li>
+  <li>
+    <p>Add the files in your new local repository. This stages them for the first commit.
+<code class="highlighter-rouge">git add .</code></p>
+  </li>
+  <li>
+    <p>Commit the files
+<code class="highlighter-rouge">git commit -m 'First commit'</code></p>
+  </li>
+  <li>
+    <p>Add remote repository URL
 <code class="highlighter-rouge">
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'password123',
-        'HOST': 'db',
-        'PORT': 5432,
-    }
-}
+# Sets the new remote
+git remote add origin remote repository URL
+# Verifies the new remote URL
+git remote -v
 </code></p>
-
-<p>接下来是 Dockerfile 和 docker-compose.yml</p>
-
-<p><code class="highlighter-rouge">Dockerfile</code>
-<code class="highlighter-rouge">
-FROM python:3.6.2  //拉 python 的image下来
-ENV PYTHONUNBUFFERED 1 //Avoid getting unwanted buffering
-RUN mkdir /docker_api //创建工作目录
-WORKDIR /docker_api  //指定工作目录
-COPY . /docker_api/   //将所有files放到工作目录下
-RUN pip install -r requirements.txt //执行安装 看下面
-</code>
-<code class="highlighter-rouge">requirements.txt</code>
-<code class="highlighter-rouge">
- django&lt;2.0
-psycopg2
-djangorestframework
-</code>
-更多reference  https://docs.docker.com/engine/reference/builder/</p>
-
-<p>接下来看docker-compose
-<code class="highlighter-rouge">docker-compose.yml</code>
-```
-version: ‘3’
-services:</p>
-
-<div class="highlighter-rouge"><pre class="highlight"><code>db:
-  container_name: 'postgres'  custom container 名称
-  image: postgres
-  environment:
-    POSTGRES_PASSWORD: password123
-  ports:
-    - "5432:5432"
-    # (HOST:CONTAINER)
-  volumes:
-    - pgdata:/var/lib/postgresql/data/
-
-web:
-  build: ./api
-  command: python manage.py runserver 0.0.0.0:8000 //启动Django server
-  restart: always
-  volumes:
-    - api_data:/docker_api
-    # (HOST:CONTAINER)
-  ports:
-    - "8000:8000"
-    # (HOST:CONTAINER)
-  depends_on:  //express dependency
-    - db
-</code></pre>
-</div>
-
-<p>volumes: //create volumes
-    api_data:
-    pgdata:
-```
-更多reference  https://docs.docker.com/compose/compose-file/#compose-file-structure-and-examples</p>
-
-<p>设定完成后 执行启动Dokcer<code class="highlighter-rouge">docker-compose up</code></p>
-
-<h3 id="docker-gui">推荐一个Docker GUI管理工具</h3>
-<p>功能强大的 <a href="https://github.com/portainer/portainer">Portaniner</a>
-安装方法可参考 https://portainer.io/install.html
-简单来说就是
-<code class="highlighter-rouge">
-docker volume create portainer_data
-docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
-</code>
-之后在浏览器运行 http://localhost:9000/	进入管理界面</p>
+  </li>
+  <li>
+    <p>Push the changes to GitHub
+<code class="highlighter-rouge">git push -u origin master</code></p>
+  </li>
+</ol>
 
     </div>
 </div>
@@ -159,7 +105,7 @@ docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/doc
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2018/01/deploy-django-application-with-docker/" data-title=Deploy Django Application with Docker data-url=https://zengtian006.github.io//2018/01/deploy-django-application-with-docker/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2018/01/adding-an-existing-project-to-github/" data-title=Adding an existing project to GitHub data-url=https://zengtian006.github.io//2018/01/adding-an-existing-project-to-github/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -184,24 +130,24 @@ docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/doc
         
         
         
-            <a href="/2017/12/building-restful-apis-with-django-rest-framework/">
+            <a href="/2018/01/deploy-django-application-with-docker/">
                 <div class="card card--article not-visible" >
                     <div class="card-body">
-                        <div class="card-title">Building RESTFul APIs with Django REST framework</div>
+                        <div class="card-title">Deploy Django Application with Docker</div>
                         <div class="card-description card-description--clamp-0">
-                            Preparation  Install Python      Install  Django    pip install django    If you are using Python 3.0+ please input the following command    pip3 install django        Install Django-REST-framework...
+                            我们目前已经建立好了一个DRF 的 Application我们在 Setting.py 里面做一些调整，将之前的SQLite 数据库 改成 PostgreSQLDATABASES = {    'default': {        'ENGINE': 'django.db.backends.postgresql_psycopg2',        'NAME': 'postgres',  ...
                         </div>
                     </div>
                     <div class="card-hero">
-                        <div class="card-image card-image--size-185" data-url="http://www.django-rest-framework.org/img/logo.png"></div>
+                        <div class="card-image card-image--size-185" data-url="https://pbs.twimg.com/profile_images/862037907862765568/pYgBswUk_400x400.jpg"></div>
                     </div>
                     <div class="card-footer">
                         <div class="card-footer-wrapper" layout="row bottom-left">
-                            <div class="card-type is-notShownIfHover">2017-12-29</div>
+                            <div class="card-type is-notShownIfHover">2018-01-05</div>
                             <div class="card-tag is-notShownIfHover">@TimZeng</div>
                             <div class="card-tag is-shownIfHover">
                                 
-                                    Python &nbsp;&nbsp;
+                                    Docker &nbsp;&nbsp;
                                 
                             </div>
                             <div class="card-logo is-shownIfHover" self="right"></div>
@@ -216,16 +162,16 @@ docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/doc
         
         
         
-            <a href="/2018/01/adding-an-existing-project-to-github/">
+            <a href="/2018/01/load-balancing-with-nginx-and-docker/">
                 <div class="card card--article not-visible" >
                     <div class="card-body">
-                        <div class="card-title">Adding an existing project to GitHub</div>
+                        <div class="card-title">Load Balancing with Nginx and Docker</div>
                         <div class="card-description card-description--clamp-0">
-                            1. [Create a new repository](https://help.github.com/articles/creating-a-new-repository/) on GitHub. To avoid errors, do not initialize the new repository with README, license, or gitignore files. ...
+                            这次利用Docker建立3个Containers， 分别是 Nginx，Django + uWSGI， Postgres (https://github.com/zengtian006/Load-Balancing-with-Nginx-and-Docker)主要说有一下Nignx 里面的`Dockerfile````FROM nginx:latest//先將 nginx.conf 複製到 ...
                         </div>
                     </div>
                     <div class="card-hero">
-                        <div class="card-image card-image--size-185" data-url="https://assets-cdn.github.com/images/modules/open_graph/github-mark.png"></div>
+                        <div class="card-image card-image--size-185" data-url="https://i.ytimg.com/vi/Njx9VAvUBWs/maxresdefault.jpg"></div>
                     </div>
                     <div class="card-footer">
                         <div class="card-footer-wrapper" layout="row bottom-left">
@@ -233,7 +179,7 @@ docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/doc
                             <div class="card-tag is-notShownIfHover">@TimZeng</div>
                             <div class="card-tag is-shownIfHover">
                                 
-                                    github &nbsp;&nbsp;
+                                    Docker &nbsp;&nbsp;
                                 
                             </div>
                             <div class="card-logo is-shownIfHover" self="right"></div>
