@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html>
+    <!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/logo.png">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+
+    <title>Load Balancing with Nginx and Docker</title>
+
+    <meta name="keywords" content="Tim, TimZeng, 曾田">
+    <meta name="author" content="TimZeng">
+    <meta name="description" content="Hi I'm Tim.">
+
+    <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
+    <meta property="og:url" content="/">
+    <meta property="og:title" content="Load Balancing with Nginx and Docker">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="这次利用Docker建立3个Containers， 分别是 Nginx，Django + uWSGI， Postgres (https://github.com/zengtian006/Load-Balancing-with-Nginx-and-Docker)">
+
+    <!--   Core CSS Files   -->
+    <link href="//cdn.bootcss.com/flex-layout-attribute/1.0.3/css/flex-layout-attribute.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://zengtian006.github.io//2018/01/load-balancing-with-nginx-and-docker/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
+</head>
+
+<body>
+    <div id="nav" layout="row top-left">
+    <div self="left">
+        <a href="/"><div class="logo logo-isNotVisIfMobile">Tim's Blog</div></a>
+        <a href="/"><div class="logo logo-isVisIfMobile"></div></a>
+    </div>
+    <div class="nav-isNotVisIfMobile">
+        <div class="item">
+            <a href="/tags">Tags</a>
+        </div>
+        <div class="item">
+            <a href="/videos">Videos</a>
+        </div>
+    </div>
+    <div class="nav-isVisIfMobile">
+        <div class="item">
+            <a href="/tags">Tags</a>
+        </div>
+        <div class="item">
+            <a href="/videos">Videos</a>
+        </div>
+    </div>
+</div>
+
+    <div id="content">
+        <div class="container container--header">
+    <h1 class="h1--home-title">Load Balancing with Nginx and Docker</h1>
+    <p></p>
+</div>
+
+        <link rel="stylesheet" type="text/css" href="/assets/css/article.css">
+
+<div class="page-wrapper">
+    <div class="container--text">
+        <p>这次利用Docker建立3个Containers， 分别是 Nginx，Django + uWSGI， Postgres (https://github.com/zengtian006/Load-Balancing-with-Nginx-and-Docker)</p>
+
+<p>主要说有一下Nignx 里面的<code class="highlighter-rouge">Dockerfile</code></p>
+
+<p>```
+FROM nginx:latest</p>
+
+<p>//先將 nginx.conf 複製到 /etc/nginx/nginx.conf 的路徑
+COPY nginx.conf /etc/nginx/nginx.conf</p>
+
+<p>//將 my_nginx.conf 複製到 /etc/nginx/sites-available/ 裡面
+COPY my_nginx.conf /etc/nginx/sites-available/</p>
+
+<p>//將 sites-enabled 以及 my_nginx.conf 連結起來。
+RUN mkdir -p /etc/nginx/sites-enabled/\
+    &amp;&amp; ln -s /etc/nginx/sites-available/my_nginx.conf /etc/nginx/sites-enabled/</p>
+
+<p>CMD [“nginx”, “-g”, “daemon off;”]
+```</p>
+
+<p><code class="highlighter-rouge">nginx.conf</code></p>
+
+<p>更改了两个地方
+1, <code class="highlighter-rouge">user  root; </code>
+2,
+<code class="highlighter-rouge">
+# include /etc/nginx/conf.d/*.conf;
+include /etc/nginx/sites-available/*;
+</code>
+另外一个重要的文件 <code class="highlighter-rouge">my_nginx.conf</code>
+```
+# the upstream component nginx needs to connect to
+upstream uwsgi {
+    # server api:8001; # use TCP
+     server demo_api_1:8001 weight=4; # use TCP
+     server demo_api_2:8001 weight=6;  # use TCP
+}</p>
+
+<h1 id="configuration-of-the-server">configuration of the server</h1>
+<p>server {
+    # the port your site will be served on
+    listen    80;
+    # index  index.html;
+    # the domain name it will serve for
+    # substitute your machine’s IP address or FQDN
+    server_name  tim.com www.tim.com;
+    charset     utf-8;</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>client_max_body_size 75M;   # adjust to taste
+
+# Django media
+# location /media  {
+#     alias /docker_api/static/media;  # your Django project's media files - amend as required
+# }
+
+location /static {
+    alias /docker_api/static; # your Django project's static files - amend as required
+}
+
+location / {
+    uwsgi_pass  uwsgi;
+    include     /etc/nginx/uwsgi_params; # the uwsgi_params file you installed
+}
+</code></pre>
+</div>
+
+<p>}
+```
+####Nginx 主要的 Load balance 有三种</p>
+
+<p><strong><em>round-robin</em></strong> — requests to the application servers are distributed in a round-robin fashion</p>
+
+<p>使用轮询的方式，也可以加上 weight 权重，让比较强的 Server 承受比较大的压力（ weight 设定高一点）。</p>
+
+<p><strong><em>least-connected</em></strong> — next request is assigned to the server with the least number of active connections</p>
+
+<p>此种方式，Nginx 会将请求给负载 Loading 较轻的 Server，避免负载（A Server） Loading 已经很大了，还将请求交给 A Server 处理。</p>
+
+<p><strong><em>ip-hash</em></strong> — a hash-function is used to determine what server should be selected for the next request (based on the client’s IP address)</p>
+
+<p>不管是 round-robin 还是 least-connected 的 Load balance ，每个 User 送出的请求都可能会被分到不同的</p>
+
+<p>Server，并不能保证同一个 User 每次的请求都一定会连到同一台 Server， 因为这个原因，於是有了 ip-hash，</p>
+
+<p>透过这个方法，会使用 ip 的方式将同一个 User 的请求都导到同一台 Server （除非这台 Server 掛了 ）</p>
+
+<p>介绍完了 Nginx 主要的三种 Load balance 演算法，至於要使用哪一种，就看你自己的需求了</p>
+
+<p>更多范例以及详细的说明可参考官网
+http://nginx.org/en/docs/http/load_balancing.html</p>
+
+<p><code class="highlighter-rouge">uwsgi.ini</code>
+```
+[uwsgi]</p>
+
+<h1 id="http00008000">http=0.0.0.0:8000</h1>
+<p>socket=:8001
+master=true
+# maximum number of worker processes
+processes=4
+threads=2
+# Django’s wsgi file
+module=demo.wsgi:application</p>
+
+<h1 id="chmod-socket664">chmod-socket=664</h1>
+<p># uid=www-data
+# gid=www-data</p>
+
+<h1 id="clear-environment-on-exit">clear environment on exit</h1>
+<p>vacuum          = true
+```
+设定完成后, 建立新的image  <code class="highlighter-rouge">docker-compose build</code>
+执行启动Dokcer<code class="highlighter-rouge">docker-compose up -d --scale api=2</code></p>
+
+    </div>
+</div>
+
+<style type="text/css">
+    .ds-thread {
+        max-width: 680px;
+        margin: auto;
+    }
+</style>
+
+<!-- 多说评论框 start -->
+<!-- <div class="ds-thread" data-thread-key="/2018/01/load-balancing-with-nginx-and-docker/" data-title=Load Balancing with Nginx and Docker data-url=https://zengtian006.github.io//2018/01/load-balancing-with-nginx-and-docker/></div> -->
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+// var duoshuoQuery = {short_name:"wnglmng"};
+//     (function() {
+//         var ds = document.createElement('script');
+//         ds.type = 'text/javascript';ds.async = true;
+//         ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+//         ds.charset = 'UTF-8';
+//         (document.getElementsByTagName('head')[0]
+//          || document.getElementsByTagName('body')[0]).appendChild(ds);
+//     })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<div class="related_posts-container" style="max-width: 790px;">
+    <p class="related_posts-header">RELATED ARTICLES</p>
+
+    <div layout="rows center-spread">
+
+        
+        
+        
+        
+            <a href="/2018/01/deploy-django-application-with-docker/">
+                <div class="card card--article not-visible" >
+                    <div class="card-body">
+                        <div class="card-title">Deploy Django Application with Docker</div>
+                        <div class="card-description card-description--clamp-0">
+                            我们目前已经建立好了一个DRF 的 Application我们在 Setting.py 里面做一些调整，将之前的SQLite 数据库 改成 PostgreSQLDATABASES = {    'default': {        'ENGINE': 'django.db.backends.postgresql_psycopg2',        'NAME': 'postgres',  ...
+                        </div>
+                    </div>
+                    <div class="card-hero">
+                        <div class="card-image card-image--size-185" data-url="https://pbs.twimg.com/profile_images/862037907862765568/pYgBswUk_400x400.jpg"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-footer-wrapper" layout="row bottom-left">
+                            <div class="card-type is-notShownIfHover">2018-01-05</div>
+                            <div class="card-tag is-notShownIfHover">@TimZeng</div>
+                            <div class="card-tag is-shownIfHover">
+                                
+                                    Docker &nbsp;&nbsp;
+                                
+                            </div>
+                            <div class="card-logo is-shownIfHover" self="right"></div>
+                        </div>
+                    </div>
+                 </div>
+            </a>
+        
+        
+
+        
+
+    </div>
+</div>
+
+
+    </div>
+    <div id="footer" layout="rows center-left">
+    <div id="end-mark">
+        <div class="end-mark-icon"></div>
+        <p class="copyright">Tim's Blog © 2017&nbsp;&nbsp;·&nbsp;&nbsp;a coder in code factory</p>
+    </div>
+    <div id="footer-links" self="right">
+        <ul>
+            <!-- <a href="#"><li class="wechat" target="_blank"></li></a> -->
+            <a href="mailto:zengtian006@gmail.com" target="_blank"><li class="mail"></li></a>
+            <a href="http://weibo.com/zengtian006" target="_blank"><li class="weibo"></li></a>
+            <a href="https://github.com/zengtian006" target="_blank"><li class="github"></li></a>
+        </ul>
+    </div>
+</div>
+
+</body>
+<!--   Core JS Files   -->
+<script src="//cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/mixitup/2.1.11/jquery.mixitup.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+</html>
