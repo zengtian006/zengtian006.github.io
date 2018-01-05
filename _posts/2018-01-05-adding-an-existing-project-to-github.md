@@ -1,7 +1,7 @@
 ---
 title: Adding an existing project to GitHub
 layout: post
-date: '2018-01-05 03:12:30'
+date: '2018-01-05 04:12:00'
 tags: github
 card-image: https://assets-cdn.github.com/images/modules/open_graph/github-mark.png
 post-card-type: image
