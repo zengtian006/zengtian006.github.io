@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+    <!DOCTYPE html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+    <link rel="apple-touch-icon" sizes="76x76" href="/assets/images/logo.png">
+    <link rel="icon" type="image/png" href="/assets/images/logo.png">
+
+    <title>Deploy Django Application with Docker</title>
+
+    <meta name="keywords" content="Tim, TimZeng, 曾田">
+    <meta name="author" content="TimZeng">
+    <meta name="description" content="Hi I'm Tim.">
+
+    <meta property="og:site_name" content="Tim's Blog — a coder in code factory">
+    <meta property="og:url" content="/">
+    <meta property="og:title" content="Deploy Django Application with Docker">
+    <meta property="og:type" content="article">
+    <meta property="og:description" content="我们目前已经建立好了一个DRF 的 Application">
+
+    <!--   Core CSS Files   -->
+    <link href="//cdn.bootcss.com/flex-layout-attribute/1.0.3/css/flex-layout-attribute.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
+
+    <!-- Canonical SEO -->
+    <link rel="canonical" href="https://zengtian006.github.io//2018/01/deploy-django-application-with-docker/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
+</head>
+
+<body>
+    <div id="nav" layout="row top-left">
+    <div self="left">
+        <a href="/"><div class="logo logo-isNotVisIfMobile">Tim's Blog</div></a>
+        <a href="/"><div class="logo logo-isVisIfMobile"></div></a>
+    </div>
+    <div class="nav-isNotVisIfMobile">
+        <div class="item">
+            <a href="/tags">Tags</a>
+        </div>
+        <div class="item">
+            <a href="/videos">Videos</a>
+        </div>
+    </div>
+    <div class="nav-isVisIfMobile">
+        <div class="item">
+            <a href="/tags">Tags</a>
+        </div>
+        <div class="item">
+            <a href="/videos">Videos</a>
+        </div>
+    </div>
+</div>
+
+    <div id="content">
+        <div class="container container--header">
+    <h1 class="h1--home-title">Deploy Django Application with Docker</h1>
+    <p></p>
+</div>
+
+        <link rel="stylesheet" type="text/css" href="/assets/css/article.css">
+
+<div class="page-wrapper">
+    <div class="container--text">
+        <p>我们目前已经建立好了一个DRF 的 <a href="https://github.com/zengtian006/Django-REST-framework">Application</a></p>
+
+<p>我们在 <code class="highlighter-rouge">Setting.py</code> 里面做一些调整，将之前的SQLite 数据库 改成 PostgreSQL
+<code class="highlighter-rouge">
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'password123',
+        'HOST': 'db',
+        'PORT': 5432,
+    }
+}
+</code></p>
+
+<p>接下来是 Dockerfile 和 docker-compose.yml</p>
+
+<p><code class="highlighter-rouge">Dockerfile</code>
+<code class="highlighter-rouge">
+FROM python:3.6.2  //拉 python 的image下来
+ENV PYTHONUNBUFFERED 1 //Avoid getting unwanted buffering
+RUN mkdir /docker_api //创建工作目录
+WORKDIR /docker_api  //指定工作目录
+COPY . /docker_api/   //将所有files放到工作目录下
+RUN pip install -r requirements.txt //执行安装 看下面
+</code>
+<code class="highlighter-rouge">requirements.txt</code>
+<code class="highlighter-rouge">
+ django&lt;2.0
+psycopg2
+djangorestframework
+</code>
+更多reference  https://docs.docker.com/engine/reference/builder/</p>
+
+<p>接下来看docker-compose
+<code class="highlighter-rouge">docker-compose.yml</code>
+```
+version: ‘3’
+services:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>db:
+  container_name: 'postgres'  custom container 名称
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: password123
+  ports:
+    - "5432:5432"
+    # (HOST:CONTAINER)
+  volumes:
+    - pgdata:/var/lib/postgresql/data/
+
+web:
+  build: ./api
+  command: python manage.py runserver 0.0.0.0:8000 //启动Django server
+  restart: always
+  volumes:
+    - api_data:/docker_api
+    # (HOST:CONTAINER)
+  ports:
+    - "8000:8000"
+    # (HOST:CONTAINER)
+  depends_on:  //express dependency
+    - db
+</code></pre>
+</div>
+
+<p>volumes: //create volumes
+    api_data:
+    pgdata:
+```
+更多reference  https://docs.docker.com/compose/compose-file/#compose-file-structure-and-examples</p>
+
+<p>设定完成后 执行启动Dokcer<code class="highlighter-rouge">docker-compose up</code></p>
+
+<h3 id="docker-gui">推荐一个Docker GUI管理工具</h3>
+<p>功能强大的 <a href="https://github.com/portainer/portainer">Portaniner</a>
+安装方法可参考 https://portainer.io/install.html
+简单来说就是
+<code class="highlighter-rouge">
+docker volume create portainer_data
+docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
+</code>
+之后在浏览器运行 http://localhost:9000/	进入管理界面</p>
+
+    </div>
+</div>
+
+<style type="text/css">
+    .ds-thread {
+        max-width: 680px;
+        margin: auto;
+    }
+</style>
+
+<!-- 多说评论框 start -->
+<!-- <div class="ds-thread" data-thread-key="/2018/01/deploy-django-application-with-docker/" data-title=Deploy Django Application with Docker data-url=https://zengtian006.github.io//2018/01/deploy-django-application-with-docker/></div> -->
+<!-- 多说评论框 end -->
+<!-- 多说公共JS代码 start (一个网页只需插入一次) -->
+<script type="text/javascript">
+// var duoshuoQuery = {short_name:"wnglmng"};
+//     (function() {
+//         var ds = document.createElement('script');
+//         ds.type = 'text/javascript';ds.async = true;
+//         ds.src = (document.location.protocol == 'https:' ? 'https:' : 'http:') + '//static.duoshuo.com/embed.js';
+//         ds.charset = 'UTF-8';
+//         (document.getElementsByTagName('head')[0]
+//          || document.getElementsByTagName('body')[0]).appendChild(ds);
+//     })();
+</script>
+<!-- 多说公共JS代码 end -->
+
+<div class="related_posts-container" style="max-width: 790px;">
+    <p class="related_posts-header">RELATED ARTICLES</p>
+
+    <div layout="rows center-spread">
+
+        
+        
+        
+        
+            <a href="/2017/12/building-restful-apis-with-django-rest-framework/">
+                <div class="card card--article not-visible" >
+                    <div class="card-body">
+                        <div class="card-title">Building RESTFul APIs with Django REST framework</div>
+                        <div class="card-description card-description--clamp-0">
+                            Preparation  Install Python      Install  Django    pip install django    If you are using Python 3.0+ please input the following command    pip3 install django        Install Django-REST-framework...
+                        </div>
+                    </div>
+                    <div class="card-hero">
+                        <div class="card-image card-image--size-185" data-url="http://www.django-rest-framework.org/img/logo.png"></div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-footer-wrapper" layout="row bottom-left">
+                            <div class="card-type is-notShownIfHover">2017-12-29</div>
+                            <div class="card-tag is-notShownIfHover">@TimZeng</div>
+                            <div class="card-tag is-shownIfHover">
+                                
+                                    Python &nbsp;&nbsp;
+                                
+                            </div>
+                            <div class="card-logo is-shownIfHover" self="right"></div>
+                        </div>
+                    </div>
+                 </div>
+            </a>
+        
+        
+
+        
+
+    </div>
+</div>
+
+
+    </div>
+    <div id="footer" layout="rows center-left">
+    <div id="end-mark">
+        <div class="end-mark-icon"></div>
+        <p class="copyright">Tim's Blog © 2017&nbsp;&nbsp;·&nbsp;&nbsp;a coder in code factory</p>
+    </div>
+    <div id="footer-links" self="right">
+        <ul>
+            <!-- <a href="#"><li class="wechat" target="_blank"></li></a> -->
+            <a href="mailto:zengtian006@gmail.com" target="_blank"><li class="mail"></li></a>
+            <a href="http://weibo.com/zengtian006" target="_blank"><li class="weibo"></li></a>
+            <a href="https://github.com/zengtian006" target="_blank"><li class="github"></li></a>
+        </ul>
+    </div>
+</div>
+
+</body>
+<!--   Core JS Files   -->
+<script src="//cdn.bootcss.com/jquery/2.1.0/jquery.min.js"></script>
+<script src="//cdn.bootcss.com/mixitup/2.1.11/jquery.mixitup.min.js"></script>
+<script src="/assets/js/main.js"></script>
+
+</html>
