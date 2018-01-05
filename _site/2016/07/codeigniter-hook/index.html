@@ -224,19 +224,19 @@ $hook['post_controller'][] = array(
         
         
         
-            <a href="/2016/08/async-open-new-tab-in-brower/">
+            <a href="/2017/03/spring-boot-application-properties/">
                 <div class="card card--article not-visible">
                     <div class="card-body">
-                        <div class="card-title card-title--articleIfNoImage">浏览器中异步打开新标签页</div>
-                        <p class="card-description card-description--clamp-14">“async open a new tab in brower”</p>
+                        <div class="card-title card-title--articleIfNoImage">SpringBoot 的 application.properties 配置文件</div>
+                        <p class="card-description card-description--clamp-14">“”</p>
                         <p class="card-description card-article-preview">
-                            最近在做项目，需要异步获取服务器端返回的URL，然后在新的标签页中打开该URL（不要问我为什么不在当前页面加载，因为种种原因，用户不希望这个页面消失，只想在新标签页中处理工作，和我们的需求有很大关系）。然后发现各种问题，有的浏览器可以，但是有的浏览器被拦截，甚至有的浏览器既不被拦截又一点反应没有。主要原因是，当 window.open 为用户触发事件内部或者加载时，不会被拦截，一旦将弹出代码移动到 ajax 或者一段异步代码内部，马上就出现被拦截的表现了，因为浏览器认为这是不安全的行为，默认都会被拦截。在网上找了些资料，多多少少会有些问题，可能是我的姿势不对。最后实现代码如下：```javascript// open a new blank tabvar createNewInterv...
+                            ```# ===================================================================# COMMON SPRING BOOT PROPERTIES## This sample file is provided as a guideline. Do NOT copy it in its# entirety to your own application.               ^^^# ===================================================================# ----------------------------------------# CORE PROP...
                         </p>
                         <p></p>
                     </div>
                     <div class="card-footer">
                         <div class="card-footer-wrapper" layout="row bottom-left">
-                            <div class="card-type is-notShownIfHover">2016-08-27</div>
+                            <div class="card-type is-notShownIfHover">2017-03-12</div>
                             <div class="card-tag is-notShownIfHover">@TimZeng</div>
                             <div class="card-tag is-shownIfHover">
                                 
