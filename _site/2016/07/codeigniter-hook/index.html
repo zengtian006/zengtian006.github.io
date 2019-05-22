@@ -25,8 +25,8 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="http://localhost:4000/2016/07/codeigniter-hook/">
-    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="http://localhost:4000/feed.xml">
+    <link rel="canonical" href="https://zengtian006.github.io//2016/07/codeigniter-hook/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
 </head>
 
 <body>
@@ -63,46 +63,49 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <h2 id="简介">简介</h2>
+        <h2 id="section">简介</h2>
 
 <p>CodeIgniter 在启动的过程中，可以在某个地方让它自动的执行自己编写的函数，完成一个特定的功能，或者说成是脚本，这个时候就需要 CodeIgniter 中的钩子扩展。突然觉得和 Spring 中的 AOP 面向切面（Aspect）很类似，就是说在系统执行的什么时候会自动的执行其他功能代码，例如Before(前) 、
 After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)。</p>
 
-<h2 id="启用钩子">启用钩子</h2>
+<h2 id="section-1">启用钩子</h2>
 
 <ol>
   <li>
     <p>在 application/config/config.php 文件里找到 $config[‘enable_hooks’] = FALSE,将 FALSE 改 TRUE ，启动钩子。</p>
 
-    <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$config</span><span class="p">[</span><span class="s1">'enable_hooks'</span><span class="p">]</span> <span class="o">=</span> <span class="k">TRUE</span><span class="p">;</span>
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge">php
+ $config['enable_hooks'] = TRUE;
+</code></p>
   </li>
   <li>
     <p>在 application/hooks 文件夹(没有自已新建)新建一任意文件名 TestHook.php 。</p>
 
-    <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="cp">&lt;?php</span>
- <span class="k">class</span> <span class="nc">TestHook</span><span class="p">{</span>
-     <span class="k">function</span> <span class="nf">display</span><span class="p">(){</span>
-           <span class="k">echo</span> <span class="s2">"Hello Hook"</span><span class="p">;</span>
-     <span class="p">}</span>
- <span class="p">}</span>
- <span class="cp">?&gt;</span>
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge">php
+ &lt;?php
+ class TestHook{
+     function display(){
+           echo "Hello Hook";
+     }
+ }
+ ?&gt;
+</code></p>
   </li>
   <li>
     <p>回到 application/config/hooks.php 里添加几行代码如下：</p>
 
-    <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="nv">$hook</span><span class="p">[</span><span class="s1">'pre_controller'</span><span class="p">]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-     <span class="s1">'class'</span>    <span class="o">=&gt;</span> <span class="s1">'MyClass'</span><span class="p">,</span>
-     <span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'Myfunction'</span><span class="p">,</span>
-     <span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'Myclass.php'</span><span class="p">,</span>
-     <span class="s1">'filepath'</span> <span class="o">=&gt;</span> <span class="s1">'hooks'</span><span class="p">,</span>
-     <span class="s1">'params'</span>   <span class="o">=&gt;</span> <span class="k">array</span><span class="p">(</span><span class="s1">'beer'</span><span class="p">,</span> <span class="s1">'wine'</span><span class="p">,</span> <span class="s1">'snacks'</span><span class="p">)</span>
- <span class="p">);</span>
- <span class="c1">// 注意</span>
- <span class="c1">// 这里可以同时定义多个钩子，只需要另起一段编写类似的代码即可。</span>
- <span class="c1">// 只需要将钩子数组变成二维数组即可。</span>
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge">php
+ $hook['pre_controller'] = array(
+     'class'    =&gt; 'MyClass',
+     'function' =&gt; 'Myfunction',
+     'filename' =&gt; 'Myclass.php',
+     'filepath' =&gt; 'hooks',
+     'params'   =&gt; array('beer', 'wine', 'snacks')
+ );
+ // 注意
+ // 这里可以同时定义多个钩子，只需要另起一段编写类似的代码即可。
+ // 只需要将钩子数组变成二维数组即可。
+</code></p>
   </li>
 </ol>
 
@@ -110,25 +113,27 @@ After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)�
 
 <blockquote>
 
-  <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// TestHook.php
-<span class="cp">&lt;?php</span>
-<span class="k">class</span> <span class="nc">TestHook</span><span class="p">{</span>
-    <span class="k">function</span> <span class="nf">display</span><span class="p">(){</span>
-          <span class="k">echo</span> <span class="s2">"Hello Hook"</span><span class="p">;</span>
-    <span class="p">}</span>
-<span class="p">}</span>
-<span class="cp">?&gt;</span>
-</code></pre></div>  </div>
+  <p><code class="highlighter-rouge">php
+// TestHook.php
+&lt;?php
+class TestHook{
+    function display(){
+          echo "Hello Hook";
+    }
+}
+?&gt;
+</code></p>
 
-  <div class="language-php highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// application/config/hooks.php</span>
-<span class="nv">$hook</span><span class="p">[</span><span class="s1">'post_controller'</span><span class="p">][]</span> <span class="o">=</span> <span class="k">array</span><span class="p">(</span>
-	<span class="s1">'class'</span> <span class="o">=&gt;</span> <span class="s1">'TestHook'</span><span class="p">,</span>
-	<span class="s1">'function'</span> <span class="o">=&gt;</span> <span class="s1">'display'</span><span class="p">,</span>
-	<span class="s1">'filename'</span> <span class="o">=&gt;</span> <span class="s1">'TestHook.php'</span><span class="p">,</span>
-	<span class="s1">'filepath'</span> <span class="o">=&gt;</span> <span class="s1">'hooks'</span><span class="p">,</span>
-	<span class="s1">'params'</span>   <span class="o">=&gt;</span> <span class="k">array</span><span class="p">()</span>
-<span class="p">);</span>
-</code></pre></div>  </div>
+  <p><code class="highlighter-rouge">php
+// application/config/hooks.php
+$hook['post_controller'][] = array(
+	'class' =&gt; 'TestHook',
+	'function' =&gt; 'display',
+	'filename' =&gt; 'TestHook.php',
+	'filepath' =&gt; 'hooks',
+	'params'   =&gt; array()
+);
+</code></p>
 </blockquote>
 
 <p><strong>注意：</strong></p>
@@ -141,7 +146,7 @@ After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)�
   <li>params 你希望传递给你脚本的任何参数，可选。</li>
 </ul>
 
-<h2 id="挂钩点">挂钩点</h2>
+<h2 id="section-2">挂钩点</h2>
 
 <ul>
   <li>pre_system 在系统执行的早期调用，这个时候只有 基准测试类 和 钩子类 被加载了， 还没有执行到路由或其他的流程。</li>
@@ -164,7 +169,7 @@ After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)�
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2016/07/codeigniter-hook/" data-title=CodeIgniter 钩子 data-url=http://localhost:4000/2016/07/codeigniter-hook/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2016/07/codeigniter-hook/" data-title=CodeIgniter 钩子 data-url=https://zengtian006.github.io//2016/07/codeigniter-hook/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -194,7 +199,7 @@ After-returning(返回后) 、After-throwing(抛出后)、Introduction(引入)�
                         <div class="card-title card-title--articleIfNoImage">Ajax 跨域访问</div>
                         <p class="card-description card-description--clamp-14">“ajax access origin resource”</p>
                         <p class="card-description card-article-preview">
-                            ##问题现象当出现跨域访问的时候， ajax 通常会报类似如下错误：  XMLHttpRequest cannot load http://localhost:8000/simple/api/users/me/login. Response to preflight request doesn’t pass access control check: No ‘Access-Control-Allow-Origin’ header is present on the requested resource. Origin ‘http://localhost:8080’ is therefore not allowed access.解决办法Tomcat设置允许跨域访问这里描述以Tomcat...
+                            问题现象当出现跨域访问的时候， ajax 通常会报类似如下错误：  XMLHttpRequest cannot load http://localhost:8000/simple/api/users/me/login. Response to preflight request doesn’t pass access control check: No ‘Access-Control-Allow-Origin’ header is present on the requested resource. Origin ‘http://localhost:8080’ is therefore not allowed access.解决办法Tomcat设置允许跨域访问这里描述以Tomcat为W...
                         </p>
                         <p></p>
                     </div>

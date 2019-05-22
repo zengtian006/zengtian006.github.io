@@ -18,15 +18,15 @@
     <meta property="og:url" content="/">
     <meta property="og:title" content="Ajax 跨域访问">
     <meta property="og:type" content="article">
-    <meta property="og:description" content="##问题现象">
+    <meta property="og:description" content="问题现象">
 
     <!--   Core CSS Files   -->
     <link href="//cdn.bootcss.com/flex-layout-attribute/1.0.3/css/flex-layout-attribute.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="http://localhost:4000/2016/05/ajax-cant-access-origin-resource/">
-    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="http://localhost:4000/feed.xml">
+    <link rel="canonical" href="https://zengtian006.github.io//2016/05/ajax-cant-access-origin-resource/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
 </head>
 
 <body>
@@ -63,7 +63,7 @@
 
 <div class="page-wrapper">
     <div class="container--text">
-        <p>##问题现象</p>
+        <h2 id="section">问题现象</h2>
 
 <p>当出现跨域访问的时候， ajax 通常会报类似如下错误：</p>
 
@@ -72,22 +72,23 @@
   <p>XMLHttpRequest cannot load http://localhost:8000/simple/api/users/me/login. Response to preflight request doesn’t pass access control check: No ‘Access-Control-Allow-Origin’ header is present on the requested resource. Origin ‘http://localhost:8080’ is therefore not allowed access.</p>
 </blockquote>
 
-<h2 id="解决办法">解决办法</h2>
+<h2 id="section-1">解决办法</h2>
 
-<h3 id="tomcat设置允许跨域访问">Tomcat设置允许跨域访问</h3>
+<h3 id="tomcat">Tomcat设置允许跨域访问</h3>
 
 <p>这里描述以Tomcat为Web服务器情况下的解决办法，在JavaWeb项目中WEB-INF文件夹下的web.xml中加入如下配置即可。</p>
 
-<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c">&lt;!-- cors filter --&gt;</span>
-<span class="nt">&lt;filter&gt;</span>
-	<span class="nt">&lt;filter-name&gt;</span>CorsFilter<span class="nt">&lt;/filter-name&gt;</span>
-	<span class="nt">&lt;filter-class&gt;</span>org.apache.catalina.filters.CorsFilter<span class="nt">&lt;/filter-class&gt;</span>
-<span class="nt">&lt;/filter&gt;</span>
-<span class="nt">&lt;filter-mapping&gt;</span>
-	<span class="nt">&lt;filter-name&gt;</span>CorsFilter<span class="nt">&lt;/filter-name&gt;</span>
-	<span class="nt">&lt;url-pattern&gt;</span>/*<span class="nt">&lt;/url-pattern&gt;</span>
-<span class="nt">&lt;/filter-mapping&gt;</span>
-</code></pre></div></div>
+<p>```xml
+<!-- cors filter --></p>
+<filter>
+	<filter-name>CorsFilter</filter-name>
+	<filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>CorsFilter</filter-name>
+	<url-pattern>/*</url-pattern>
+</filter-mapping>
+<p>```</p>
 
 <p><strong>注意:</strong> org.apache.catalina.filters.CorsFilter 下面有好几个配置选项，上面没有配置时就采用系统的默认配置。在实际生产环境要根据需要进行配置来提高安全性。比如 cors.allowed.origins 配置入汛访问的源地址，默认为所有，即 * 。此外还有 fors.allowed.methods ，cors.allowed.headers 等等。具体配置细节可以参考 <a href="https://tomcat.apache.org/tomcat-7.0-doc/config/filter.html">https://tomcat.apache.org/tomcat-7.0-doc/config/filter.html</a> 中 CORS Filter 章节。</p>
 
@@ -102,7 +103,7 @@
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2016/05/ajax-cant-access-origin-resource/" data-title=Ajax 跨域访问 data-url=http://localhost:4000/2016/05/ajax-cant-access-origin-resource/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2016/05/ajax-cant-access-origin-resource/" data-title=Ajax 跨域访问 data-url=https://zengtian006.github.io//2016/05/ajax-cant-access-origin-resource/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

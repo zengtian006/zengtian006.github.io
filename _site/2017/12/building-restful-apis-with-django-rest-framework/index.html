@@ -25,8 +25,8 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="http://localhost:4000/2017/12/building-restful-apis-with-django-rest-framework/">
-    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="http://localhost:4000/feed.xml">
+    <link rel="canonical" href="https://zengtian006.github.io//2017/12/building-restful-apis-with-django-rest-framework/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
 </head>
 
 <body>
@@ -88,92 +88,100 @@
   <li>
     <p>Create a Django project and an app. I created it with a name django-tutorial and music</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ django-admin startproject django-tutorial
+    <p><code class="highlighter-rouge">
+$ django-admin startproject django-tutorial
 $ cd django-tutorial
 $ python manage.py startapp music
-</code></pre></div>    </div>
+</code></p>
   </li>
   <li>
     <p>Add rest_framework and the app name to the installed apps in settings.py</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> INSTALLED_APPS = (
+    <p><code class="highlighter-rouge">
+ INSTALLED_APPS = (
  ...
  'rest_framework',
  'music',
  ...
  )
-</code></pre></div>    </div>
+</code></p>
   </li>
   <li>
     <p>Create Model and schema for database. (Django using SQLite as default, you can change other database you prefered in setting.py)</p>
 
     <p>in music/models.py</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> from django.db import models
+    <p>```
+ from django.db import models</p>
 
- # Create your models here.
+    <p># Create your models here.
  class Music(models.Model):
      song = models.TextField()
      singer = models.TextField()
      last_modify_date = models.DateTimeField(auto_now=True)
      created = models.DateTimeField(auto_now_add=True)
      class Meta:
-         db_table = "music"
-</code></pre></div>    </div>
+         db_table = “music”
+ ```</p>
   </li>
   <li>
     <p>Create database in SQLite (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> python manage.py makemigrations
+    <p><code class="highlighter-rouge">
+ python manage.py makemigrations
  python manage.py migrate
-</code></pre></div>    </div>
+</code></p>
   </li>
   <li>
     <p>Create a music/serializers.py which should look like the below way.</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> <span class="k">from</span> <span class="n">rest_framework</span> <span class="n">import</span> <span class="n">serializers</span>
- <span class="k">from</span> <span class="n">musics</span><span class="p">.</span><span class="n">models</span> <span class="n">import</span> <span class="n">Music</span>
- <span class="n">class</span> <span class="n">MusicSerializer</span><span class="p">(</span><span class="n">serializers</span><span class="p">.</span><span class="n">ModelSerializer</span><span class="p">):</span>
-     <span class="n">class</span> <span class="n">Meta</span><span class="p">:</span>
-         <span class="k">model</span> <span class="p">=</span> <span class="n">Music</span>
-         <span class="n">fields</span> <span class="p">=</span> <span class="p">(</span><span class="s1">'id'</span><span class="p">,</span> <span class="s1">'song'</span><span class="p">,</span> <span class="s1">'singer'</span><span class="p">,</span> <span class="s1">'last_modify_date'</span><span class="p">,</span> <span class="s1">'created'</span><span class="p">)</span>
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge">
+ from rest_framework import serializers
+ from musics.models import Music
+ class MusicSerializer(serializers.ModelSerializer):
+     class Meta:
+         model = Music
+         fields = ('id', 'song', 'singer', 'last_modify_date', 'created')
+  </code></p>
   </li>
   <li>
     <p>Create a music/view.py and enable CRUD</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> from musics.models import Music
+    <p>```
+ from musics.models import Music
  from musics.serializers import MusicSerializer
- from rest_framework import viewsets
+ from rest_framework import viewsets</p>
 
- # Create your views here.
+    <p># Create your views here.
  class MusicViewSet(viewsets.ModelViewSet):
      queryset = Music.objects.all()
      serializer_class = MusicSerializer
-</code></pre></div>    </div>
+   ```</p>
   </li>
   <li>
     <p>Update the root urls.py</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> from django.conf.urls import url, include
+    <p>```
+ from django.conf.urls import url, include
  from django.contrib import admin
  from rest_framework.routers import DefaultRouter
- from musics import views
+ from musics import views</p>
 
- router = DefaultRouter()
- router.register(r'music', views.MusicViewSet)
+    <p>router = DefaultRouter()
+ router.register(r’music’, views.MusicViewSet)</p>
 
- urlpatterns = [
-         url(r'^admin/', admin.site.urls),
-         url(r'^api/', include(router.urls))
+    <p>urlpatterns = [
+         url(r’^admin/’, admin.site.urls),
+         url(r’^api/’, include(router.urls))
  ]
-</code></pre></div>    </div>
+ ```</p>
   </li>
   <li>
     <p>Finally start server, the default port is 8000 (change to <code class="highlighter-rouge">python3</code> if you are using Python 3.0+)</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> python manage.py runserver [port]
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge">
+ python manage.py runserver [port]
+</code></p>
   </li>
 </ol>
 
@@ -186,11 +194,12 @@ $ python manage.py startapp music
 
     <p>BODY:</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
-      singer:
-      song:
-  }
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge"><span class="w">
+  </span><span class="p">{</span><span class="w">
+      </span><span class="err">singer:</span><span class="w">
+      </span><span class="err">song:</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span></code></p>
   </li>
   <li>
     <p>Get all music info</p>
@@ -204,11 +213,12 @@ $ python manage.py startapp music
 
     <p>BODY:</p>
 
-    <div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>  {
-      singer:
-      song:
-  }
-</code></pre></div>    </div>
+    <p><code class="highlighter-rouge"><span class="w">
+  </span><span class="p">{</span><span class="w">
+      </span><span class="err">singer:</span><span class="w">
+      </span><span class="err">song:</span><span class="w">
+  </span><span class="p">}</span><span class="w">
+ </span></code></p>
   </li>
   <li>
     <p>Delete specify music</p>
@@ -228,7 +238,7 @@ $ python manage.py startapp music
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2017/12/building-restful-apis-with-django-rest-framework/" data-title=Building RESTFul APIs with Django REST framework data-url=http://localhost:4000/2017/12/building-restful-apis-with-django-rest-framework/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2017/12/building-restful-apis-with-django-rest-framework/" data-title=Building RESTFul APIs with Django REST framework data-url=https://zengtian006.github.io//2017/12/building-restful-apis-with-django-rest-framework/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

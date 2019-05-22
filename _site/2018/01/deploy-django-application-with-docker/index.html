@@ -25,8 +25,8 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="http://localhost:4000/2018/01/deploy-django-application-with-docker/">
-    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="http://localhost:4000/feed.xml">
+    <link rel="canonical" href="https://zengtian006.github.io//2018/01/deploy-django-application-with-docker/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
 </head>
 
 <body>
@@ -65,8 +65,9 @@
     <div class="container--text">
         <p>我们目前已经建立好了一个DRF 的 <a href="https://github.com/zengtian006/Django-REST-framework">Application</a></p>
 
-<p>我们在 <code class="highlighter-rouge">Setting.py</code> 里面做一些调整，将之前的SQLite 数据库 改成 PostgreSQL</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>DATABASES = {
+<p>我们在 <code class="highlighter-rouge">Setting.py</code> 里面做一些调整，将之前的SQLite 数据库 改成 PostgreSQL
+<code class="highlighter-rouge">
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'postgres',
@@ -76,70 +77,76 @@
         'PORT': 5432,
     }
 }
-</code></pre></div></div>
+</code></p>
 
 <p>接下来是 Dockerfile 和 docker-compose.yml</p>
 
-<p><code class="highlighter-rouge">Dockerfile</code></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM python:3.6.2  //拉 python 的image下来
+<p><code class="highlighter-rouge">Dockerfile</code>
+<code class="highlighter-rouge">
+FROM python:3.6.2  //拉 python 的image下来
 ENV PYTHONUNBUFFERED 1 //Avoid getting unwanted buffering
 RUN mkdir /docker_api //创建工作目录
 WORKDIR /docker_api  //指定工作目录
 COPY . /docker_api/   //将所有files放到工作目录下
 RUN pip install -r requirements.txt //执行安装 看下面
-</code></pre></div></div>
-<p><code class="highlighter-rouge">requirements.txt</code></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code> django&lt;2.0
+</code>
+<code class="highlighter-rouge">requirements.txt</code>
+<code class="highlighter-rouge">
+ django&lt;2.0
 psycopg2
 djangorestframework
-</code></pre></div></div>
-<p>更多reference  https://docs.docker.com/engine/reference/builder/</p>
+</code>
+更多reference  https://docs.docker.com/engine/reference/builder/</p>
 
 <p>接下来看docker-compose
-<code class="highlighter-rouge">docker-compose.yml</code></p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>version: '3'
-services:
+<code class="highlighter-rouge">docker-compose.yml</code>
+```
+version: ‘3’
+services:</p>
 
-    db:
-      container_name: 'postgres'  custom container 名称
-      image: postgres
-      environment:
-        POSTGRES_PASSWORD: password123
-      ports:
-        - "5432:5432"
-        # (HOST:CONTAINER)
-      volumes:
-        - pgdata:/var/lib/postgresql/data/
+<div class="highlighter-rouge"><pre class="highlight"><code>db:
+  container_name: 'postgres'  custom container 名称
+  image: postgres
+  environment:
+    POSTGRES_PASSWORD: password123
+  ports:
+    - "5432:5432"
+    # (HOST:CONTAINER)
+  volumes:
+    - pgdata:/var/lib/postgresql/data/
 
-    web:
-      build: ./api
-      command: python manage.py runserver 0.0.0.0:8000 //启动Django server
-      restart: always
-      volumes:
-        - api_data:/docker_api
-        # (HOST:CONTAINER)
-      ports:
-        - "8000:8000"
-        # (HOST:CONTAINER)
-      depends_on:  //express dependency
-        - db
+web:
+  build: ./api
+  command: python manage.py runserver 0.0.0.0:8000 //启动Django server
+  restart: always
+  volumes:
+    - api_data:/docker_api
+    # (HOST:CONTAINER)
+  ports:
+    - "8000:8000"
+    # (HOST:CONTAINER)
+  depends_on:  //express dependency
+    - db
+</code></pre>
+</div>
 
-volumes: //create volumes
+<p>volumes: //create volumes
     api_data:
     pgdata:
-</code></pre></div></div>
-<p>更多reference  https://docs.docker.com/compose/compose-file/#compose-file-structure-and-examples</p>
+```
+更多reference  https://docs.docker.com/compose/compose-file/#compose-file-structure-and-examples</p>
 
 <p>设定完成后 执行启动Dokcer<code class="highlighter-rouge">docker-compose up</code></p>
 
-<p>###推荐一个Docker GUI管理工具
-功能强大的 <a href="https://github.com/portainer/portainer">Portaniner</a>
+<h3 id="docker-gui">推荐一个Docker GUI管理工具</h3>
+<p>功能强大的 <a href="https://github.com/portainer/portainer">Portaniner</a>
 安装方法可参考 https://portainer.io/install.html
-简单来说就是</p>
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>docker volume create portainer_data
+简单来说就是
+<code class="highlighter-rouge">
+docker volume create portainer_data
 docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/docker.sock -v portainer_data:/data portainer/portainer
-</code></pre></div></div>
-<p>之后在浏览器运行 http://localhost:9000/	进入管理界面</p>
+</code>
+之后在浏览器运行 http://localhost:9000/	进入管理界面</p>
 
     </div>
 </div>
@@ -152,7 +159,7 @@ docker run --name=portainer -d -p 9000:9000 -v /var/run/docker.sock:/var/run/doc
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2018/01/deploy-django-application-with-docker/" data-title=Deploy Django Application with Docker data-url=http://localhost:4000/2018/01/deploy-django-application-with-docker/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2018/01/deploy-django-application-with-docker/" data-title=Deploy Django Application with Docker data-url=https://zengtian006.github.io//2018/01/deploy-django-application-with-docker/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
