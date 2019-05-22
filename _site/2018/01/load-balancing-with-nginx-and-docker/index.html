@@ -25,8 +25,8 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="https://zengtian006.github.io//2018/01/load-balancing-with-nginx-and-docker/">
-    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
+    <link rel="canonical" href="http://localhost:4000/2018/01/load-balancing-with-nginx-and-docker/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="http://localhost:4000/feed.xml">
 </head>
 
 <body>
@@ -67,71 +67,66 @@
 
 <p>主要说有一下Nignx 里面的<code class="highlighter-rouge">Dockerfile</code></p>
 
-<p>```
-FROM nginx:latest</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>FROM nginx:latest
 
-<p>//先將 nginx.conf 複製到 /etc/nginx/nginx.conf 的路徑
-COPY nginx.conf /etc/nginx/nginx.conf</p>
+//先將 nginx.conf 複製到 /etc/nginx/nginx.conf 的路徑
+COPY nginx.conf /etc/nginx/nginx.conf
 
-<p>//將 my_nginx.conf 複製到 /etc/nginx/sites-available/ 裡面
-COPY my_nginx.conf /etc/nginx/sites-available/</p>
+//將 my_nginx.conf 複製到 /etc/nginx/sites-available/ 裡面
+COPY my_nginx.conf /etc/nginx/sites-available/
 
-<p>//將 sites-enabled 以及 my_nginx.conf 連結起來。
+//將 sites-enabled 以及 my_nginx.conf 連結起來。
 RUN mkdir -p /etc/nginx/sites-enabled/\
-    &amp;&amp; ln -s /etc/nginx/sites-available/my_nginx.conf /etc/nginx/sites-enabled/</p>
+    &amp;&amp; ln -s /etc/nginx/sites-available/my_nginx.conf /etc/nginx/sites-enabled/
 
-<p>CMD [“nginx”, “-g”, “daemon off;”]
-```</p>
+CMD ["nginx", "-g", "daemon off;"]
+</code></pre></div></div>
 
 <p><code class="highlighter-rouge">nginx.conf</code></p>
 
 <p>更改了两个地方
 1, <code class="highlighter-rouge">user  root; </code>
-2,
-<code class="highlighter-rouge">
-# include /etc/nginx/conf.d/*.conf;
+2,</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># include /etc/nginx/conf.d/*.conf;
 include /etc/nginx/sites-available/*;
-</code>
-另外一个重要的文件 <code class="highlighter-rouge">my_nginx.conf</code>
-```
-# the upstream component nginx needs to connect to
+</code></pre></div></div>
+<p>另外一个重要的文件 <code class="highlighter-rouge">my_nginx.conf</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># the upstream component nginx needs to connect to
 upstream uwsgi {
     # server api:8001; # use TCP
      server demo_api_1:8001 weight=4; # use TCP
      server demo_api_2:8001 weight=6;  # use TCP
-}</p>
+}
 
-<h1 id="configuration-of-the-server">configuration of the server</h1>
-<p>server {
+# configuration of the server
+server {
     # the port your site will be served on
     listen    80;
     # index  index.html;
     # the domain name it will serve for
-    # substitute your machine’s IP address or FQDN
+    # substitute your machine's IP address or FQDN
     server_name  tim.com www.tim.com;
-    charset     utf-8;</p>
+    charset     utf-8;
 
-<div class="highlighter-rouge"><pre class="highlight"><code>client_max_body_size 75M;   # adjust to taste
+    client_max_body_size 75M;   # adjust to taste
 
-# Django media
-# location /media  {
-#     alias /docker_api/static/media;  # your Django project's media files - amend as required
-# }
+    # Django media
+    # location /media  {
+    #     alias /docker_api/static/media;  # your Django project's media files - amend as required
+    # }
 
-location /static {
-    alias /docker_api/static; # your Django project's static files - amend as required
+    location /static {
+        alias /docker_api/static; # your Django project's static files - amend as required
+    }
+
+    location / {
+        uwsgi_pass  uwsgi;
+        include     /etc/nginx/uwsgi_params; # the uwsgi_params file you installed
+    }
+
 }
-
-location / {
-    uwsgi_pass  uwsgi;
-    include     /etc/nginx/uwsgi_params; # the uwsgi_params file you installed
-}
-</code></pre>
-</div>
-
-<p>}
-```
-####Nginx 主要的 Load balance 有三种</p>
+</code></pre></div></div>
+<p>####Nginx 主要的 Load balance 有三种</p>
 
 <p><strong><em>round-robin</em></strong> — requests to the application servers are distributed in a round-robin fashion</p>
 
@@ -154,27 +149,26 @@ location / {
 <p>更多范例以及详细的说明可参考官网
 http://nginx.org/en/docs/http/load_balancing.html</p>
 
-<p><code class="highlighter-rouge">uwsgi.ini</code>
-```
-[uwsgi]</p>
+<p><code class="highlighter-rouge">uwsgi.ini</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>[uwsgi]
 
-<h1 id="http00008000">http=0.0.0.0:8000</h1>
-<p>socket=:8001
+# http=0.0.0.0:8000
+socket=:8001
 master=true
 # maximum number of worker processes
 processes=4
 threads=2
-# Django’s wsgi file
-module=demo.wsgi:application</p>
+# Django's wsgi file
+module=demo.wsgi:application
 
-<h1 id="chmod-socket664">chmod-socket=664</h1>
-<p># uid=www-data
-# gid=www-data</p>
+# chmod-socket=664
+# uid=www-data
+# gid=www-data
 
-<h1 id="clear-environment-on-exit">clear environment on exit</h1>
-<p>vacuum          = true
-```
-设定完成后, 建立新的image  <code class="highlighter-rouge">docker-compose build</code>
+# clear environment on exit
+vacuum          = true
+</code></pre></div></div>
+<p>设定完成后, 建立新的image  <code class="highlighter-rouge">docker-compose build</code>
 执行启动Dokcer<code class="highlighter-rouge">docker-compose up -d --scale api=2</code></p>
 
     </div>
@@ -188,7 +182,7 @@ module=demo.wsgi:application</p>
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2018/01/load-balancing-with-nginx-and-docker/" data-title=Load Balancing with Nginx and Docker data-url=https://zengtian006.github.io//2018/01/load-balancing-with-nginx-and-docker/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2018/01/load-balancing-with-nginx-and-docker/" data-title=Load Balancing with Nginx and Docker data-url=http://localhost:4000/2018/01/load-balancing-with-nginx-and-docker/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">

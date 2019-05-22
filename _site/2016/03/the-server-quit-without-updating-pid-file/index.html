@@ -25,8 +25,8 @@
     <link rel="stylesheet" type="text/css" href="/assets/css/main.css">
 
     <!-- Canonical SEO -->
-    <link rel="canonical" href="https://zengtian006.github.io//2016/03/the-server-quit-without-updating-pid-file/">
-    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="https://zengtian006.github.io//feed.xml">
+    <link rel="canonical" href="http://localhost:4000/2016/03/the-server-quit-without-updating-pid-file/">
+    <link rel="alternate" type="application/rss+xml" title="Tim's Blog" href="http://localhost:4000/feed.xml">
 </head>
 
 <body>
@@ -65,17 +65,15 @@
     <div class="container--text">
         <p>今天在命令行启动MySQL的时候, 报了一个错误, 无法启动. 如下.</p>
 
-<p><code class="highlighter-rouge">
-.ERROR! The server quit without updating PID file (/usr/local/var/mysql/WngLMng-MacBook.local.pid).
-</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>.ERROR! The server quit without updating PID file (/usr/local/var/mysql/WngLMng-MacBook.local.pid).
+</code></pre></div></div>
 
 <p><img src="https://ww3.sinaimg.cn/large/906cb9dbgw1f9ilmfmcqxj21hw0xogt3.jpg" alt="" /></p>
 
 <p>解决办法如下, 将MySQL下的对应的err文件删除即可.</p>
 
-<p><code class="highlighter-rouge">
-$ rm -r /usr/local/var/mysql/WngLMng-MacBook.local.err
-</code></p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>$ rm -r /usr/local/var/mysql/WngLMng-MacBook.local.err
+</code></pre></div></div>
 
 <p><img src="https://ww4.sinaimg.cn/large/906cb9dbgw1f9ilmv0cfej21ia0ykajp.jpg" alt="" /></p>
 
@@ -92,7 +90,7 @@ $ rm -r /usr/local/var/mysql/WngLMng-MacBook.local.err
 </style>
 
 <!-- 多说评论框 start -->
-<!-- <div class="ds-thread" data-thread-key="/2016/03/the-server-quit-without-updating-pid-file/" data-title=The server quit without updating PID file. data-url=https://zengtian006.github.io//2016/03/the-server-quit-without-updating-pid-file/></div> -->
+<!-- <div class="ds-thread" data-thread-key="/2016/03/the-server-quit-without-updating-pid-file/" data-title=The server quit without updating PID file. data-url=http://localhost:4000/2016/03/the-server-quit-without-updating-pid-file/></div> -->
 <!-- 多说评论框 end -->
 <!-- 多说公共JS代码 start (一个网页只需插入一次) -->
 <script type="text/javascript">
@@ -122,7 +120,7 @@ $ rm -r /usr/local/var/mysql/WngLMng-MacBook.local.err
                     <div class="card-body">
                         <div class="card-title">Memcache简单介绍</div>
                         <div class="card-description card-description--clamp-0">
-                            最近在学习有关缓存的一些知识，了解到有Memcache和Redis，那我先来介绍一下我目前了解到Memcache吧。有些人可能会在网上看到Memcache和Memcached这两个词，这两个个东西其实不必太在意，只不过Memcache是这个项目的名称，而Memcached是项目的服务端主程序名称。简介Memcached官网Memcache是一个基于内存的，采用key-value的存储方式，能...
+                            最近在学习有关缓存的一些知识，了解到有Memcache和Redis，那我先来介绍一下我目前了解到Memcache吧。有些人可能会在网上看到Memcache和Memcached这两个词，这两个个东西其实不必太在意，只不过Memcache是这个项目的名称，而Memcached是项目的服务端主程序名称。##简介Memcached官网Memcache是一个基于内存的，采用key-value的存储方式...
                         </div>
                     </div>
                     <div class="card-hero">
